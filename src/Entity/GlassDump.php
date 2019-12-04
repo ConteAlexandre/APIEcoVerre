@@ -74,6 +74,12 @@ class GlassDump
 
     private $id_bin;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\City")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $city_uuid;
+
     public function __construct()
     {
         $this->id_bin = new ArrayCollection();
@@ -202,6 +208,18 @@ class GlassDump
     public function setIsEnable(bool $is_enable): self
     {
         $this->is_enable = $is_enable;
+
+        return $this;
+    }
+
+    public function getCityUuid(): ?City
+    {
+        return $this->city_uuid;
+    }
+
+    public function setCityUuid(?City $city_uuid): self
+    {
+        $this->city_uuid = $city_uuid;
 
         return $this;
     }
