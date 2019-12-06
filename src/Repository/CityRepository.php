@@ -19,22 +19,50 @@ class CityRepository extends ServiceEntityRepository
         parent::__construct($registry, City::class);
     }
 
-    // /**
-    //  * @return City[] Returns an array of City objects
-    //  */
-    /*
-    public function findByExampleField($value)
+      /**
+      * @return City[] Returns an array of City objects
+      */
+
+    public function findAllCity()
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $query = $this->createQueryBuilder('c')
+            ->select('c.id','c.name','c.county_code','c.region','c.mail_city','c.created_at','c.updated_at')
+            ->getQuery();
+
+         return $query->getArrayResult();
     }
-    */
+
+    /**
+     * @return City[] Returns an array of City objects
+     */
+
+    public function findCityById($id)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('c.id','c.name','c.county_code','c.region','c.mail_city','c.created_at','c.updated_at')
+            ->andWhere('c.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+        return $query->getArrayResult();
+    }
+
+    public function deleteCity($id)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->delete()
+            ->andWhere('c.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+        return $query->getArrayResult();
+
+
+    }
+
+    public function addCity()
+    {
+
+
+    }
 
     /*
     public function findOneBySomeField($value): ?City

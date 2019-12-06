@@ -217,10 +217,11 @@ class GlassDump
         return $this->city_uuid;
     }
 
-    public function setCityUuid(?City $city_uuid): self
+    public function setCityUuid($city_uuid)
     {
         $this->city_uuid = $city_uuid;
 
         return $this;
     }
+
 }
