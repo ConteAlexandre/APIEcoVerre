@@ -10,10 +10,134 @@
             "description": "mon api"
         }
     ],
+    "paths": {
+        "/city/list": {
+            "get": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::listCity",
+                "responses": {
+                    "200": {
+                        "description": "Nos Villes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/City"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/city/show/{id}": {
+            "get": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::showCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ville",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/city/update/{id}": {
+            "put": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::updateCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateCity"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ville",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/city/create/{id}": {
+            "post": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::createCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateCity"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ville",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        }
+    },
     "components": {
         "schemas": {
             "City": {
-                "description": "Listing de City",
+                "description": "Schema City Général",
                 "properties": {
                     "id": {
                         "description": "uuid",
@@ -56,6 +180,119 @@
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/City"
+                    }
+                ]
+            },
+            "GlassDump": {
+                "description": "Schema GlassDump Général",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "number_borne": {
+                        "description": "numéro de la borne",
+                        "type": "integer"
+                    },
+                    "volume": {
+                        "description": "Volume de la Benne total",
+                        "type": "integer"
+                    },
+                    "landmark": {
+                        "description": "point de repère",
+                        "type": "string"
+                    },
+                    "collect_day": {
+                        "description": "Jour de collecte",
+                        "type": "string"
+                    },
+                    "coordonate": {
+                        "description": "geography de postgis",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "created_at": {
+                        "description": "date de création",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "date de de modif",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "dammage": {
+                        "description": "Endommagé ou non",
+                        "type": "boolean"
+                    },
+                    "is_full": {
+                        "description": "Pleine ou non",
+                        "type": "boolean"
+                    },
+                    "is_enable": {
+                        "description": "Active ou non",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "GlassDumpList": {
+                "description": "Schema de lit GlassDump",
+                "properties": {
+                    "number_borne": {
+                        "description": "numéro de la borne",
+                        "type": "integer"
+                    },
+                    "coordonate": {
+                        "description": "geography de postgis",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "created_at": {
+                        "description": "date de création",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "dammage": {
+                        "description": "Endommagé ou non",
+                        "type": "boolean"
+                    },
+                    "is_full": {
+                        "description": "Pleine ou non",
+                        "type": "boolean"
+                    },
+                    "is_enable": {
+                        "description": "Active ou non",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "GlassDumpSingle": {
+                "description": "Only GlassDump",
+                "properties": {
+                    "volume": {
+                        "description": "Volume de la Benne total",
+                        "type": "integer"
+                    },
+                    "landmark": {
+                        "description": "point de repère",
+                        "type": "string"
+                    },
+                    "collect_day": {
+                        "description": "Jour de collecte",
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "description": "date de de modif",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/GlassDumpList"
                     }
                 ]
             }

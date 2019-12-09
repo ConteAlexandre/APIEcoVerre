@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(
  *     schema="City",
- *     description="Listing de City",
+ *     description="Schema City Général",
  *     @OA\Property(type="string", description="uuid", property="id"),
  *     @OA\Property(type="string", description="name", property="name"),
  *     @OA\Property(type="integer", description="departement", property="county_code"),
