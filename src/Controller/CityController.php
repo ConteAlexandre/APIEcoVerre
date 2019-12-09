@@ -16,7 +16,7 @@ class CityController extends AbstractController
     /**
      * @OA\Get(
      *     path="/city/list",
-     *     tags="City",
+     *     tags={"City"},
      *     @OA\Response(
      *          response="200",
      *          description="Nos Villes",
@@ -38,7 +38,7 @@ class CityController extends AbstractController
     /**
      * @OA\Get(
      *     path="/city/show/{id}",
-     *     tags="City",
+     *     tags={"City"},
      *     @OA\Parameter(ref="#/components/parameters/id"),
      *     @OA\Response(
      *          response="200",
@@ -60,7 +60,7 @@ class CityController extends AbstractController
     /**
      * @OA\Put(
      *     path="/city/update/{id}",
-     *     tags="City",
+     *     tags={"City"},
      *     @OA\Parameter(ref="#/components/parameters/id"),
      *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateCity"),
      *     @OA\Response(
@@ -83,7 +83,7 @@ class CityController extends AbstractController
     /**
      * @OA\Post(
      *     path="/city/create/{id}",
-     *     tags="City",
+     *     tags={"City"},
      *     @OA\Parameter(ref="#/components/parameters/id"),
      *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateCity"),
      *     @OA\Response(
