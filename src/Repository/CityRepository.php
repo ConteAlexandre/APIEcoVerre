@@ -47,4 +47,14 @@ class CityRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllCity()
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('c.id', 'c.name', 'c.county_code', 'c.region', 'c.mail_city', 'c.created_at', 'c.updated_at')
+            ->getQuery()
+            ;
+
+        return $query->getArrayResult();
+    }
 }
