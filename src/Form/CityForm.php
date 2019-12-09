@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\City;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,13 +15,14 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\RequestBody(
- *     request="UpdateCity",
+ *     request="CreateUpdateCity",
  *     required=true,
  *     @OA\JsonContent(
  *          required={"name", "county_code", "region"},
  *          @OA\Property(type="string", property="name"),
  *          @OA\Property(type="integer", property="county_code"),
- *          @OA\Property(type="string", property="region")
+ *          @OA\Property(type="string", property="region"),
+ *          @OA\Property(type="string", property="mail_city"),
  *     )
  * )
  */
@@ -32,6 +34,7 @@ class CityForm extends AbstractType
             ->add("name", TextType::class)
             ->add("countyCode", NumberType::class)
             ->add("region", TextType::class)
+            ->add("mailCity", EmailType::class)
             ;
     }
 

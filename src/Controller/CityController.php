@@ -11,18 +11,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminController extends AbstractController
+class CityController extends AbstractController
 {
     /**
      * @OA\Get(
      *     path="/city/list",
+     *     tags="City",
      *     @OA\Response(
      *          response="200",
      *          description="Nos Villes",
      *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/City"))
      *     )
      * )
-     * @Route("/city/list", name="list_user")
+     * @Route("/city/list", name="list_city")
      */
     public function listCity()
     {
@@ -36,7 +37,8 @@ class AdminController extends AbstractController
 
     /**
      * @OA\Get(
-     *     path="/city/{id}",
+     *     path="/city/show/{id}",
+     *     tags="City",
      *     @OA\Parameter(ref="#/components/parameters/id"),
      *     @OA\Response(
      *          response="200",
@@ -48,17 +50,19 @@ class AdminController extends AbstractController
      *          ref="#/components/responses/NotFound"
      * )
      * )
-     * @Route("/city/list", name="list_user")
+     * @Route("/city/list", name="show_city")
      */
     public function showCity()
     {
 
     }
+
     /**
-     * @OA\Post(
-     *     path="/city/{id}",
+     * @OA\Put(
+     *     path="/city/update/{id}",
+     *     tags="City",
      *     @OA\Parameter(ref="#/components/parameters/id"),
-     *     @OA\RequestBody(ref="#/components/requestBodies/UpdateCity"),
+     *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateCity"),
      *     @OA\Response(
      *          response="200",
      *          description="Ville",
@@ -69,9 +73,32 @@ class AdminController extends AbstractController
      *          ref="#/components/responses/NotFound"
      * )
      * )
-     * @Route("/city/list", name="list_user")
+     * @Route("/city/update/{id}", name="update_city")
      */
     public function updateCity()
+    {
+
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/city/create/{id}",
+     *     tags="City",
+     *     @OA\Parameter(ref="#/components/parameters/id"),
+     *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateCity"),
+     *     @OA\Response(
+     *          response="200",
+     *          description="Ville",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CitySingle"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     * )
+     * )
+     * @Route("/city/create/{id}", name="create_city")
+     */
+    public function createCity()
     {
 
     }

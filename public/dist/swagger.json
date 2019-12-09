@@ -10,85 +10,6 @@
             "description": "mon api"
         }
     ],
-    "paths": {
-        "/city/list": {
-            "get": {
-                "operationId": "App\\Controller\\AdminController::listCity",
-                "responses": {
-                    "200": {
-                        "description": "Nos Villes",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/City"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/city/{id}": {
-            "get": {
-                "operationId": "App\\Controller\\AdminController::showCity",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/id"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Ville",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CitySingle"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/NotFound"
-                    }
-                }
-            },
-            "post": {
-                "operationId": "App\\Controller\\AdminController::updateCity",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/id"
-                    }
-                ],
-                "requestBody": {
-                    "$ref": "#/components/requestBodies/UpdateCity"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Ville",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CitySingle"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/NotFound"
-                    }
-                }
-            }
-        }
-    },
     "components": {
         "schemas": {
             "City": {
@@ -169,7 +90,7 @@
             }
         },
         "requestBodies": {
-            "UpdateCity": {
+            "CreateUpdateCity": {
                 "required": true,
                 "content": {
                     "application/json": {
@@ -187,6 +108,9 @@
                                     "type": "integer"
                                 },
                                 "region": {
+                                    "type": "string"
+                                },
+                                "mail_city": {
                                     "type": "string"
                                 }
                             },
