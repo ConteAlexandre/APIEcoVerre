@@ -57,6 +57,35 @@
                         "$ref": "#/components/responses/NotFound"
                     }
                 }
+            },
+            "post": {
+                "operationId": "App\\Controller\\AdminController::updateCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/UpdateCity"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ville",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
             }
         }
     },
@@ -136,6 +165,34 @@
                 "required": true,
                 "schema": {
                     "type": "string"
+                }
+            }
+        },
+        "requestBodies": {
+            "UpdateCity": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "name",
+                                "county_code",
+                                "region"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "county_code": {
+                                    "type": "integer"
+                                },
+                                "region": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
                 }
             }
         }

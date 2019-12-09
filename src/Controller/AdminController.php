@@ -52,6 +52,28 @@ class AdminController extends AbstractController
      */
     public function showCity()
     {
-        
+
     }
+    /**
+     * @OA\Post(
+     *     path="/city/{id}",
+     *     @OA\Parameter(ref="#/components/parameters/id"),
+     *     @OA\RequestBody(ref="#/components/requestBodies/UpdateCity"),
+     *     @OA\Response(
+     *          response="200",
+     *          description="Ville",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CitySingle"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     * )
+     * )
+     * @Route("/city/list", name="list_user")
+     */
+    public function updateCity()
+    {
+
+    }
+
 }
