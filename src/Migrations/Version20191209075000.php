@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20191206091823 extends AbstractMigration
+final class Version20191209075000 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -58,7 +58,6 @@ final class Version20191206091823 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('CREATE SCHEMA topology');
         $this->addSql('ALTER TABLE historic DROP CONSTRAINT FK_AD52EF563655294E');
         $this->addSql('ALTER TABLE user_glassdump DROP CONSTRAINT FK_2182CCCBCE4A9265');
         $this->addSql('ALTER TABLE users DROP CONSTRAINT FK_1483A5E9E3395098');

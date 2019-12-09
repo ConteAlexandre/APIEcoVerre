@@ -15,7 +15,6 @@ class CityFixtures extends Fixture
             $city->setName('city' . $i);
             $city->setCountyCode(mt_rand(1000, 10000));
             $city->setRegion('city'.$i);
-            $city->setCreatedAt(new \DateTime('now'));
 
         $manager->persist($city);
         }
