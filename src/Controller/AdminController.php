@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\City;
+use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,9 +14,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/user/list", name="list_user")
+     * @OA\Get(
+     *     path="/city/list",
+     *     @OA\Response(
+     *          response="200",
+     *          description="Nos Villes",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/City"))
+     *     )
+     * )
+     * @Route("/city/list", name="list_user")
      */
-    public function listUsers()
+    public function listCity()
     {
         $city = $this->getDoctrine()->getManager()->getRepository(City::class)->findAllCity();
         $response = new JsonResponse([
@@ -26,18 +35,23 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @Route("/user/create", name="create_user")
-     * @return array
+     * @OA\Get(
+     *     path="/city/{id}",
+     *     @OA\Parameter(ref="#/components/parameters/id"),
+     *     @OA\Response(
+     *          response="200",
+     *          description="Ville",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CitySingle"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     * )
+     * )
+     * @Route("/city/list", name="list_user")
      */
-    public function createCity(Request $request)
+    public function showCity()
     {
-        return [
-            'city' => [
-                $request->get('name'),
-                $request->get('countyCode'),
-                $request->get('region')
-            ]
-        ];
+        
     }
 }

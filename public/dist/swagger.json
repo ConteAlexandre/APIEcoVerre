@@ -1,0 +1,143 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API TUTO",
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://api.tuto.fr/v1",
+            "description": "mon api"
+        }
+    ],
+    "paths": {
+        "/city/list": {
+            "get": {
+                "operationId": "App\\Controller\\AdminController::listCity",
+                "responses": {
+                    "200": {
+                        "description": "Nos Villes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/City"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/city/{id}": {
+            "get": {
+                "operationId": "App\\Controller\\AdminController::showCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ville",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "City": {
+                "description": "Listing de City",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "name",
+                        "type": "string"
+                    },
+                    "county_code": {
+                        "description": "departement",
+                        "type": "integer"
+                    },
+                    "region": {
+                        "description": "name region",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "date création",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CitySingle": {
+                "description": "Listing d'une villle",
+                "properties": {
+                    "mail_city": {
+                        "description": "mail client",
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "description": "date de modif",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/City"
+                    }
+                ]
+            }
+        },
+        "responses": {
+            "NotFound": {
+                "description": "La ressource n'existe pas",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Cette ressource n'existe pas"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "id": {
+                "name": "id",
+                "in": "path",
+                "description": "id de la ville",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
