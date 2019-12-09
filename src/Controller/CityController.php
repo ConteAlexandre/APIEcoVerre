@@ -8,7 +8,6 @@ use App\Entity\City;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CityController extends AbstractController
@@ -82,9 +81,8 @@ class CityController extends AbstractController
 
     /**
      * @OA\Post(
-     *     path="/city/create/{id}",
+     *     path="/city/create",
      *     tags={"City"},
-     *     @OA\Parameter(ref="#/components/parameters/id"),
      *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateCity"),
      *     @OA\Response(
      *          response="200",

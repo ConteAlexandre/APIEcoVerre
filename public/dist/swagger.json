@@ -99,17 +99,12 @@
                 }
             }
         },
-        "/city/create/{id}": {
+        "/city/create": {
             "post": {
                 "tags": [
                     "City"
                 ],
                 "operationId": "App\\Controller\\CityController::createCity",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/id"
-                    }
-                ],
                 "requestBody": {
                     "$ref": "#/components/requestBodies/CreateUpdateCity"
                 },
@@ -129,6 +124,129 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/glassdump/list": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::listGlassDump",
+                "responses": {
+                    "200": {
+                        "description": "This GlassDump",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpList"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/glassdump/show/{id}": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::showGlassDump",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "GlassDump",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/glassdump/create": {
+            "post": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::createGlassDump",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateGlassDump"
+                },
+                "responses": {
+                    "200": {
+                        "description": "GlassDump create",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                }
+            }
+        },
+        "/glassdump/update/{id}": {
+            "put": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::updateGlassDump",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateGlassDump"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update Reussi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
                     }
                 }
             }
@@ -313,13 +431,29 @@
                         }
                     }
                 }
+            },
+            "NoAuthorized": {
+                "description": "Vous n'avez pas accès à cette page",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Vous n'avez pas l'autorisation"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
             }
         },
         "parameters": {
             "id": {
                 "name": "id",
                 "in": "path",
-                "description": "id de la ville",
+                "description": "id de la ressource",
                 "required": true,
                 "schema": {
                     "type": "string"
@@ -349,6 +483,42 @@
                                 },
                                 "mail_city": {
                                     "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "CreateUpdateGlassDump": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "number_one",
+                                "volume",
+                                "landmark",
+                                "collect_day",
+                                "coordonate"
+                            ],
+                            "properties": {
+                                "number_one": {
+                                    "type": "integer"
+                                },
+                                "volume": {
+                                    "type": "integer"
+                                },
+                                "landmark": {
+                                    "type": "string"
+                                },
+                                "collect_day": {
+                                    "type": "string"
+                                },
+                                "coordonate": {
+                                    "description": "geography PostGis",
+                                    "type": "number",
+                                    "format": "double"
                                 }
                             },
                             "type": "object"
