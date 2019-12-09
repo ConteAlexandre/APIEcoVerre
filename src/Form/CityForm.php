@@ -10,7 +10,20 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\RequestBody(
+ *     request="UpdateCity",
+ *     required=true,
+ *     @OA\JsonContent(
+ *          required={"name", "county_code", "region"},
+ *          @OA\Property(type="string", property="name"),
+ *          @OA\Property(type="integer", property="county_code"),
+ *          @OA\Property(type="string", property="region")
+ *     )
+ * )
+ */
 class CityForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
