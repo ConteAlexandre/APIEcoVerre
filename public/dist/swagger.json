@@ -47,41 +47,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Ville",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CitySingle"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/NotFound"
-                    }
-                }
-            }
-        },
-        "/city/update/{id}": {
-            "put": {
-                "tags": [
-                    "City"
-                ],
-                "operationId": "App\\Controller\\CityController::updateCity",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/id"
-                    }
-                ],
-                "requestBody": {
-                    "$ref": "#/components/requestBodies/CreateUpdateCity"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Ville",
+                        "description": "Show City",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -110,7 +76,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Ville",
+                        "description": "Create City",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -124,8 +90,91 @@
                     },
                     "404": {
                         "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
                     }
-                }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/city/update/{id}": {
+            "put": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::updateCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateCity"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update City",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/city/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::deleteCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete City",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
             }
         },
         "/glassdump/list": {
@@ -211,7 +260,10 @@
                     "403": {
                         "$ref": "#/components/responses/NoAuthorized"
                     }
-                }
+                },
+                "security": [
+                    "bearer"
+                ]
             }
         },
         "/glassdump/update/{id}": {
@@ -248,7 +300,47 @@
                     "403": {
                         "$ref": "#/components/responses/NoAuthorized"
                     }
-                }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/glassdump/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::deleteGlassDump",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete Reussi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
             }
         }
     },
@@ -525,6 +617,12 @@
                         }
                     }
                 }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "bearerFormat": "JWT"
             }
         }
     }

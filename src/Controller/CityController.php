@@ -22,6 +22,7 @@ class CityController extends AbstractController
      *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/City"))
      *     )
      * )
+     *
      * @Route("/city/list", name="list_city")
      */
     public function listCity()
@@ -41,14 +42,15 @@ class CityController extends AbstractController
      *     @OA\Parameter(ref="#/components/parameters/id"),
      *     @OA\Response(
      *          response="200",
-     *          description="Ville",
+     *          description="Show City",
      *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CitySingle"))
      *     ),
      *     @OA\Response(
      *          response="404",
      *          ref="#/components/responses/NotFound"
+     *     )
      * )
-     * )
+     *
      * @Route("/city/list", name="show_city")
      */
     public function showCity()
@@ -57,21 +59,55 @@ class CityController extends AbstractController
     }
 
     /**
-     * @OA\Put(
-     *     path="/city/update/{id}",
+     * @OA\Post(
+     *     path="/city/create",
      *     tags={"City"},
-     *     @OA\Parameter(ref="#/components/parameters/id"),
+     *     security={"bearer"},
      *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateCity"),
      *     @OA\Response(
      *          response="200",
-     *          description="Ville",
+     *          description="Create City",
      *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CitySingle"))
      *     ),
      *     @OA\Response(
      *          response="404",
      *          ref="#/components/responses/NotFound"
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     )
      * )
+     *
+     * @Route("/city/create/{id}", name="create_city")
+     */
+    public function createCity()
+    {
+
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/city/update/{id}",
+     *     tags={"City"},
+     *     security={"bearer"},
+     *     @OA\Parameter(ref="#/components/parameters/id"),
+     *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateCity"),
+     *     @OA\Response(
+     *          response="200",
+     *          description="Update City",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CitySingle"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     )
      * )
+     *
      * @Route("/city/update/{id}", name="update_city")
      */
     public function updateCity()
@@ -80,23 +116,29 @@ class CityController extends AbstractController
     }
 
     /**
-     * @OA\Post(
-     *     path="/city/create",
+     * @OA\Delete(
+     *     path="/city/delete/{id}",
      *     tags={"City"},
-     *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateCity"),
+     *     security={"bearer"},
+     *     @OA\Parameter(ref="#/components/parameters/id"),
      *     @OA\Response(
      *          response="200",
-     *          description="Ville",
+     *          description="Delete City",
      *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CitySingle"))
      *     ),
      *     @OA\Response(
      *          response="404",
      *          ref="#/components/responses/NotFound"
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     )
      * )
-     * )
-     * @Route("/city/create/{id}", name="create_city")
+     *
+     * @Route("/city/update/{id}", name="update_city")
      */
-    public function createCity()
+    public function deleteCity()
     {
 
     }

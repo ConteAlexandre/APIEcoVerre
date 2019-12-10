@@ -57,6 +57,7 @@ class GlassDumpController extends AbstractController
      * @OA\Post(
      *     path="/glassdump/create",
      *     tags={"GlassDump"},
+     *     security={"bearer"},
      *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateGlassDump"),
      *     @OA\Response(
      *          response="200",
@@ -84,6 +85,7 @@ class GlassDumpController extends AbstractController
      * @OA\Put(
      *     path="/glassdump/update/{id}",
      *     tags={"GlassDump"},
+     *     security={"bearer"},
      *     @OA\RequestBody(ref="#/components/requestBodies/CreateUpdateGlassDump"),
      *     @OA\Parameter(ref="#/components/parameters/id"),
      *     @OA\Response(
@@ -104,6 +106,34 @@ class GlassDumpController extends AbstractController
      * @Route("/glassdump/update/{id}", name="update_glassdump")
      */
     public function updateGlassDump()
+    {
+
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/glassdump/delete/{id}",
+     *     tags={"GlassDump"},
+     *     security={"bearer"},
+     *     @OA\Parameter(ref="#/components/parameters/id"),
+     *     @OA\Response(
+     *          response="200",
+     *          description="Delete Reussi",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/GlassDumpSingle"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     )
+     * )
+     *
+     * @Route("/glassdump/update/{id}", name="update_glassdump")
+     */
+    public function deleteGlassDump()
     {
 
     }
