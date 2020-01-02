@@ -20,7 +20,7 @@ class CityController extends AbstractController
      *          response="200",
      *          description="Nos Villes",
      *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/City"))
-     *     )
+     *     ),
      * )
      *
      * @Route("/city/list", name="list_city")
