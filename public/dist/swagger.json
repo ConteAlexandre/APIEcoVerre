@@ -505,6 +505,33 @@
                         "$ref": "#/components/schemas/GlassDumpList"
                     }
                 ]
+            },
+            "Historic": {
+                "description": "schema Historic Listing",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "user_glassdump_uuid": {
+                        "description": "id user",
+                        "type": "string"
+                    },
+                    "is_full": {
+                        "description": "if glassdump full",
+                        "type": "boolean"
+                    },
+                    "is_damage": {
+                        "description": "if glassdump is break",
+                        "type": "boolean"
+                    },
+                    "is_created": {
+                        "description": "creation date",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
             }
         },
         "responses": {
