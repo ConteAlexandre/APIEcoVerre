@@ -136,7 +136,7 @@ class CityController extends AbstractController
      *     )
      * )
      *
-     * @Route("/city/update/{id}", name="update_city")
+     * @Route("/city/delete/{id}", name="delete_city")
      */
     public function deleteCity()
     {
