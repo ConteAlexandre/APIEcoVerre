@@ -644,6 +644,32 @@
                         }
                     }
                 }
+            },
+            "CreateHistoric": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "user_glassdump_uuid",
+                                "is_full",
+                                "is_damage"
+                            ],
+                            "properties": {
+                                "user_glassdump_uuid": {
+                                    "type": "string"
+                                },
+                                "is_full": {
+                                    "type": "boolean"
+                                },
+                                "is_damage": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
             }
         },
         "securitySchemes": {
