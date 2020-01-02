@@ -11,6 +11,64 @@
         }
     ],
     "paths": {
+        "/registration": {
+            "post": {
+                "tags": [
+                    "Access"
+                ],
+                "operationId": "App\\Controller\\AccesController::registrationController",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Signup"
+                },
+                "responses": {
+                    "200": {
+                        "description": "registration for user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserCreate"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Access"
+                ],
+                "operationId": "App\\Controller\\AccesController::login",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Signin"
+                },
+                "responses": {
+                    "200": {
+                        "description": "signin is ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserCreate"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
         "/city/list": {
             "get": {
                 "tags": [
