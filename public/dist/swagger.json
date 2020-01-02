@@ -445,6 +445,187 @@
                     "bearer"
                 ]
             }
+        },
+        "/users/list": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::listUsers",
+                "responses": {
+                    "200": {
+                        "description": "list Users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Users"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "no authorization",
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/users/show/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::showUsers",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "profile user for admin",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Users"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/user/profile/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::profileUser",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "profile for the user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserProfile"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/user/update/{id}": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::updateUser",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/ProfileUser"
+                },
+                "responses": {
+                    "200": {
+                        "description": "update profile the user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserProfile"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/users/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::deleteUsers",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete User",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Users"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
         }
     },
     "components": {
