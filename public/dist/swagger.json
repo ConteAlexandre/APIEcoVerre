@@ -635,6 +635,94 @@
                     }
                 },
                 "type": "object"
+            },
+            "Users": {
+                "description": "schema global for user",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "username": {
+                        "description": "username",
+                        "type": "string"
+                    },
+                    "mail": {
+                        "description": "mail of user",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "password of user",
+                        "type": "string"
+                    },
+                    "token": {
+                        "description": "token for forgot password",
+                        "type": "string"
+                    },
+                    "adress": {
+                        "description": "adress of user",
+                        "type": "string"
+                    },
+                    "roles": {
+                        "description": "role for user for wave",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "date created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "date update",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_enable": {
+                        "description": "activ or not",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "UserCreate": {
+                "description": "schema for sign up",
+                "properties": {
+                    "username": {
+                        "description": "username",
+                        "type": "string"
+                    },
+                    "mail": {
+                        "description": "mail of use",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "password of user",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserProfile": {
+                "description": "update user",
+                "properties": {
+                    "username": {
+                        "description": "username",
+                        "type": "string"
+                    },
+                    "mail": {
+                        "description": "mail of user",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "password of user",
+                        "type": "string"
+                    },
+                    "adress": {
+                        "description": "adress of user",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
             }
         },
         "responses": {
