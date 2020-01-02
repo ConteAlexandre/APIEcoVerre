@@ -371,6 +371,80 @@
                     "bearer"
                 ]
             }
+        },
+        "/historic/show/{id}": {
+            "get": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::showHistoric",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "show single historic",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/historic/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::deleteHistoric",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete Historic",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
         }
     },
     "components": {
