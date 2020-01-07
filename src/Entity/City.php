@@ -137,4 +137,17 @@ class City
 
         return $this;
     }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'countyCode' => $this->getCountyCode(),
+            'region' => $this->getRegion(),
+            'mailCity' => $this->getMailCity(),
+            'createdAt' => $this->getCreatedAt(),
+            'updatedAt' => $this->getUpdatedAt(),
+            ];
+    }
 }
