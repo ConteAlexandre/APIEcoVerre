@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\City;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 /**
  * @method City|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,65 +16,40 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class CityRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $manager;
+
+    public function __construct(ManagerRegistry $registery, EntityManagerInterface $manager)
     {
-        parent::__construct($registry, City::class);
+        parent::__construct($registery, City::class);
+        $this->manager = $manager;
     }
 
-      /**
-      * @return City[] Returns an array of City objects
-      */
-
-    public function findAllCity()
+    public function saveCity($name,$county_code,$region,$mail_city)
     {
-        $query = $this->createQueryBuilder('c')
-            ->select('c.id','c.name','c.county_code','c.region','c.mail_city','c.created_at','c.updated_at')
-            ->getQuery();
+        $newCity = new City();
 
-         return $query->getArrayResult();
+        $newCity->setName($name)
+            ->setCountyCode($county_code)
+            ->setRegion($region)
+            ->setMailCity($mail_city);
+        $this->manager->persist($newCity);
+        $this->manager->flush();
     }
 
-    /**
-     * @return City[] Returns an array of City objects
-     */
-
-    public function findCityById($id)
+    public function updateCity(City $city, $data)
     {
-        $query = $this->createQueryBuilder('c')
-            ->select('c.id','c.name','c.county_code','c.region','c.mail_city','c.created_at','c.updated_at')
-            ->andWhere('c.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery();
-        return $query->getArrayResult();
+        empty($data['name']) ? true : $city->setName($data['name']);
+        empty($data['countyCode']) ? true : $city->setName($data['countyCode']);
+        empty($data['region']) ? true : $city->setName($data['region']);
+        empty($data['mailCity']) ? true : $city->setName($data['mailCity']);
+
+        $this->manager->flush();
     }
 
-    public function deleteCity($id)
+    public function removeCity(City $city)
     {
-        $query = $this->createQueryBuilder('c')
-            ->delete()
-            ->andWhere('c.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery();
-        return $query->getArrayResult();
-
-
+        $this->manager->remove($city);
+        $this->manager->flush();
     }
 
-    public function addCity()
-    {
-
-
-    }
-
-    /*
-    public function findOneBySomeField($value): ?City
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
