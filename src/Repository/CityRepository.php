@@ -39,9 +39,9 @@ class CityRepository extends ServiceEntityRepository
     public function updateCity(City $city, $data)
     {
         empty($data['name']) ? true : $city->setName($data['name']);
-        empty($data['countyCode']) ? true : $city->setName($data['countyCode']);
-        empty($data['region']) ? true : $city->setName($data['region']);
-        empty($data['mailCity']) ? true : $city->setName($data['mailCity']);
+        empty($data['countyCode']) ? true : $city->setCountyCode($data['countyCode']);
+        empty($data['region']) ? true : $city->setRegion($data['region']);
+        empty($data['mailCity']) ? true : $city->setMailCity($data['mailCity']);
 
         $this->manager->flush();
     }
