@@ -263,7 +263,7 @@
                 "tags": [
                     "GlassDump"
                 ],
-                "operationId": "App\\Controller\\GlassDumpController::showGlassDump",
+                "operationId": "App\\Controller\\GlassDumpController::showGlassDumpId",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/id"
@@ -278,6 +278,37 @@
                                     "type": "array",
                                     "items": {
                                         "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/glassdump/show/{coordonate}": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::showGlassDumpGeo",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/coordonate"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "find glassdump",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpList"
                                     }
                                 }
                             }
@@ -1003,6 +1034,15 @@
                 "name": "id",
                 "in": "path",
                 "description": "id de la ressource",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "coordonate": {
+                "name": "coordonate",
+                "in": "path",
+                "description": "coordonate of glassdump",
                 "required": true,
                 "schema": {
                     "type": "string"

@@ -48,7 +48,28 @@ class GlassDumpController extends AbstractController
      *
      * @Route("/glassdump/show/{id}", name="show_glassdump")
      */
-    public function showGlassDump()
+    public function showGlassDumpId()
+    {
+
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/glassdump/show/{coordonate}",
+     *     tags={"GlassDump"},
+     *     @OA\Parameter(ref="#/components/parameters/coordonate"),
+     *     @OA\Response(
+     *          response="200",
+     *          description="find glassdump",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/GlassDumpList"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     )
+     * )
+     */
+    public function showGlassDumpGeo()
     {
 
     }
