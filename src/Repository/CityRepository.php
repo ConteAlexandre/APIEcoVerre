@@ -46,7 +46,6 @@ class CityRepository extends ServiceEntityRepository
         empty($data['region']) ? true : is_string($data['region']) ? true : strlen($data['region']) > 100 ? true : $city->setRegion($data['region']);
         empty($data['mailCity']) ? true : is_string($data['mailCity']) ? true : strlen($data['mailCity']) > 150 ? true : $city->setMailCity($data['mailCity']);
         $city->setUpdatedAt(new \Datetime("now"));
-
         $this->manager->flush();
     }
 
