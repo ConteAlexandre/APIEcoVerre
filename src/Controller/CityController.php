@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\City;
 use App\Repository\CityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
