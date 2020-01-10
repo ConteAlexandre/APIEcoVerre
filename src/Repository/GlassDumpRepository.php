@@ -33,6 +33,12 @@ class GlassDumpRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+
+SELECT id, name, address, ST_Distance(geom, ref_geom) AS distance
+FROM Seattle_Starbucks
+CROSS JOIN (SELECT ST_MakePoint(-122.325959, 47.625138)::geography AS ref_geom) AS r
+WHERE ST_DWithin(geom, ref_geom, 1000)
+ORDER BY ST_Distance(geom, ref_geom);
     }
     */
 

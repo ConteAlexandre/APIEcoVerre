@@ -30,9 +30,9 @@ class CityRepository extends ServiceEntityRepository
 
         //vérification intégrité et validité des données
         empty($name) ? true : is_string($name) ? true : strlen($name) > 100 ? true : $newCity->setName($name);
-        empty($county_code) ? true : is_string($county_code) ? true : strlen($county_code) > 10 ? true : $newCity->setName($county_code);
-        empty($region) ? true : is_string($region) ? true : strlen($region) > 100 ? true : $newCity->setName($region);
-        empty($mail_city) ? true : is_string($mail_city) ? true : strlen($mail_city) > 150 ? true : $newCity->setName($mail_city);
+        empty($county_code) ? true : is_string($county_code) ? true : strlen($county_code) > 10 ? true : $newCity->setCountyCode($county_code);
+        empty($region) ? true : is_string($region) ? true : strlen($region) > 100 ? true : $newCity->setRegion($region);
+        empty($mail_city) ? true : is_string($mail_city) ? true : strlen($mail_city) > 150 ? true : $newCity->setMailCity($mail_city);
 
         $this->manager->persist($newCity);
         $this->manager->flush();
@@ -52,7 +52,6 @@ class CityRepository extends ServiceEntityRepository
     public function removeCity(City $city)
     {
         //auth admin stp
-
         $this->manager->remove($city);
         $this->manager->flush();
     }
