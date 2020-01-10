@@ -61,7 +61,7 @@ class CityController
     }
 
     /**
-     * @Route("/all", name="get_all_city", methods={"GET"})
+     * @Route("/list", name="get_all_city", methods={"GET"})
      */
     public function getAllCity(): JsonResponse
     {

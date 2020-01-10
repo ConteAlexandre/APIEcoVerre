@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\City;
 use App\Entity\GlassDump;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method GlassDump|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,16 +16,39 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class GlassDumpRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, GlassDump::class);
+        $this->manager = $manager;
     }
 
-    // /**
-    //  * @return GlassDump[] Returns an array of GlassDump objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+    public function saveDump($numBorn,$volume,$landMark,$collectDay,$coordonate,$damage,$is_full,$is_enable,$idCity)
+    {
+        $newBen = new GlassDump();
+
+        empty($numBorn) ? true  : $newBen->setNumberBorne($numBorn);
+        empty($volume) ? true  : $newBen->setVolume($volume);
+        empty($landMark) ? true  : $newBen->setLandmark($landMark);
+        empty($collectDay) ?  true : $newBen->setCollectDay($collectDay);
+        empty($coordonate) ? true : $newBen->setCoordonate($coordonate);
+        empty($damage) ? true : $newBen->setDammage($damage);
+        empty($is_full) ? true  : $newBen->setIsFull($is_full);
+        empty($is_enable) ? true : $newBen->setIsEnable($is_enable);
+        empty($idCity) ? true : $newBen->setCityUuid($idCity);
+
+        $this->manager->persist($newBen);
+        $this->manager->flush();
+
+
+    }
+
+    public function updateDump(GlassDump $dump, $data)
     {
         return $this->createQueryBuilder('g')
             ->andWhere('g.exampleField = :val')
@@ -33,24 +58,11 @@ class GlassDumpRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-
-SELECT id, name, address, ST_Distance(geom, ref_geom) AS distance
-FROM Seattle_Starbucks
-CROSS JOIN (SELECT ST_MakePoint(-122.325959, 47.625138)::geography AS ref_geom) AS r
-WHERE ST_DWithin(geom, ref_geom, 1000)
-ORDER BY ST_Distance(geom, ref_geom);
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?GlassDump
+    public function deleteDump(GlassDump $dump)
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $this->manager->remove($dump);
+        $this->manager->flush();
     }
-    */
 }
