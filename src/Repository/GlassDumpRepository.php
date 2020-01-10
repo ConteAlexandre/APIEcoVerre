@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\City;
 use App\Entity\GlassDump;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method GlassDump|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,37 +16,56 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class GlassDumpRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, GlassDump::class);
+        $this->manager = $manager;
     }
 
-    // /**
-    //  * @return GlassDump[] Returns an array of GlassDump objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?GlassDump
+    public function saveDump($numBorn,$volume,$landMark,$collectDay,$coordonate,$damage,$is_full,$is_enable,$idCity)
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $newBen = new GlassDump();
+
+        empty($numBorn) ? true  : $newBen->setNumberBorne($numBorn);
+        empty($volume) ? true  : $newBen->setVolume($volume);
+        empty($landMark) ? true  : $newBen->setLandmark($landMark);
+        empty($collectDay) ?  true : $newBen->setCollectDay($collectDay);
+        empty($coordonate) ? true : $newBen->setCoordonate($coordonate);
+        empty($damage) ? true : $newBen->setDammage($damage);
+        empty($is_full) ? true  : $newBen->setIsFull($is_full);
+        empty($is_enable) ? true : $newBen->setIsEnable($is_enable);
+        empty($idCity) ? true : $newBen->setCityUuid($idCity);
+
+        $this->manager->persist($newBen);
+        $this->manager->flush();
+
+
     }
-    */
+
+    public function updateDump(GlassDump $dump, $data)
+    {
+        empty($data['numBorn']) ? true : $dump->setNumberBorne($data['numBorn']);
+        empty($data['volume']) ? true : $dump->setVolume($data['volume']);
+        empty($data['landMark']) ? true : $dump->setLandmark($data['landMark']);
+        empty($data['collectDay']) ? true : $dump->setCollectDay($data['collectDay']);
+        empty(($data['coordonate'])) ? true : $dump->setCoordonate($data['coordonate']);
+        empty($data['dammage']) ? true : $dump->setDammage($data['dammage']);
+        empty($data['isFull']) ? true : $dump->setIsFull($data['isFull']);
+        empty($data['isEnable']) ? true : $dump->setIsEnable($data['isEnable']);
+        empty($data['idCity']) ? true : $dump->setCityUuid($data['idCity']);
+        $dump->setUpdatedAt(new \Datetime("now"));
+        $this->manager->flush();
+    }
+
+    public function deleteDump(GlassDump $dump)
+    {
+        $this->manager->remove($dump);
+        $this->manager->flush();
+    }
 }

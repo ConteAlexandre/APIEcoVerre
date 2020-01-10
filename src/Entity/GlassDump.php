@@ -74,10 +74,6 @@ class GlassDump
 
     private $id_bin;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City")
-     * @ORM\JoinColumn(nullable=false)
-     */
     private $city_uuid;
 
     public function __construct()
