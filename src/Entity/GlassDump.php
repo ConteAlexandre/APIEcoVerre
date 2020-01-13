@@ -88,12 +88,12 @@ class GlassDump
         return $this->id;
     }
 
-    public function getNumberBorne(): ?int
+    public function getNumberBorne(): ?string
     {
         return $this->number_borne;
     }
 
-    public function setNumberBorne(?int $number_borne): self
+    public function setNumberBorne(?string $number_borne): self
     {
         $this->number_borne = $number_borne;
 
@@ -143,6 +143,7 @@ class GlassDump
 
     public function setCoordonate($coordonate): self
     {
+        //ST_GeometryFromText('POINT(1.3993400071067 43.70909700286)', 4326);
         $this->coordonate = $coordonate;
 
         return $this;

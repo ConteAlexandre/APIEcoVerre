@@ -28,7 +28,7 @@ class GlassDumpRepository extends ServiceEntityRepository
     }
 
 
-    public function saveDump($numBorn,$volume,$landMark,$collectDay,$coordonate,$damage,$is_full,$is_enable,$idCity)
+    public function saveDump($numBorn,$volume,$landMark,$collectDay,$coordonate,$idCity)
     {
         $newBen = new GlassDump();
 
@@ -36,10 +36,10 @@ class GlassDumpRepository extends ServiceEntityRepository
         empty($volume) ? true  : $newBen->setVolume($volume);
         empty($landMark) ? true  : $newBen->setLandmark($landMark);
         empty($collectDay) ?  true : $newBen->setCollectDay($collectDay);
-        empty($coordonate) ? true : $newBen->setCoordonate($coordonate);
-        empty($damage) ? true : $newBen->setDammage($damage);
-        empty($is_full) ? true  : $newBen->setIsFull($is_full);
-        empty($is_enable) ? true : $newBen->setIsEnable($is_enable);
+        empty($coordonate) ? true : $newBen->setCoordonate("POINT($coordonate)");
+        $newBen->setDammage(FALSE);
+        $newBen->setIsFull(FALSE);
+        $newBen->setIsEnable(TRUE);
         empty($idCity) ? true : $newBen->setCityUuid($idCity);
 
         $this->manager->persist($newBen);
@@ -48,7 +48,7 @@ class GlassDumpRepository extends ServiceEntityRepository
 
     }
 
-    public function updateDump(GlassDump $dump, $data)
+    public function updateDump(GlassDump $dump, $data) //ne marche pas (erreur avec $value)
     {
         return $this->createQueryBuilder('g')
             ->andWhere('g.exampleField = :val')
