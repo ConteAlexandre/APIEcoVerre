@@ -64,11 +64,12 @@ class GlassDumpController
             'volume' => $dump->getVolume(),
             'landMark' => $dump->getLandmark(),
             'collectDay' => $dump->getCollectDay(),
-            'coordonate' => $dump->getCoordonate(),
+            'coordinate' => $dump->getCoordonate(),
             'damage' => $dump->getDammage(),
             'isFull' => $dump->getIsFull(),
             'isEnable' => $dump->getIsEnable(),
-            'idCity' => $dump->getId(),
+            'nameCity' => $dump->getCityName(),
+            'countryCode' => $dump->getCountryCode(),
             'createdAt' => $dump->getCreatedAt(),
             'updatedAt' => $dump->getUpdatedAt(),
         ];
@@ -107,13 +108,16 @@ class GlassDumpController
 
     /**
      * @Route("/update/{id}", name="update_dump", methods={"PUT"})
+     * @param $id
+     * @param Request $request
+     * @return JsonResponse
      */
     public function updateDump($id, Request $request)
     {
         $dump = $this->glassDumpRepository->findOneBy(['id' => $id]);
         $data = json_decode($request->getContent(), true);
         $this->glassDumpRepository->updateDump($dump, $data);
-        return new JsonResponse(['status' => 'GlassDump deleted']);
+        return new JsonResponse(['status' => 'GlassDump update !']);
     }
 
     /**
@@ -174,7 +178,7 @@ class GlassDumpController
             }
             $compteur++;
 
-            $this->glassDumpRepository->saveDump($iddump, Null, $adresse, Null, $coord,Uuid::fromString("451ce05e-72ab-4b96-b28b-9399b73fd15e"));
+            $this->glassDumpRepository->saveDump();
             unset($iddump, $coord, $nomVille, $codePost);
         }
 
@@ -188,20 +192,6 @@ class GlassDumpController
         $allglassdump['debug']['nomville'] = $erreur['nomville'];
         $allglassdump['debug']['id'] = $erreur['id'];
 
-        /*$idCity = $data['idCity'];
-
-        $coordonate = $data['coordonate'];
-        $numBorn = $data['number_borne'];
-        $volume = $data['volume'];
-        $landMark = $data['landMark'];
-        $collectDay = Null;
-        $damage = FALSE;
-        $is_full = FALSE;
-        $is_enable = TRUE;
-
-        if (empty($idCity) || empty($numBorn) || empty($volume) || empty($landMark) || empty($collectDay) || empty($coordonate)) {
-            throw new NotFoundHttpException('Expecting mandatory parameters!');
-        }*/
         return new JsonResponse($allglassdump, Response::HTTP_CREATED);
     }
 

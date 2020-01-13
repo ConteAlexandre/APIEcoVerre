@@ -7,6 +7,7 @@ use App\Entity\GlassDump;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method GlassDump|null find($id, $lockMode = null, $lockVersion = null)
@@ -49,21 +50,27 @@ class GlassDumpRepository extends ServiceEntityRepository
 
     }
 
-    public function updateDump(GlassDump $dump, $data) //ne marche pas (erreur avec $value)
+    public function updateDump(GlassDump $dump, $data)
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $data)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        empty($data['numBorn']) ? true : $dump->setNumberBorne($data['numBorn']);
+        empty($data['volume']) ? true : $dump->setVolume($data['volume']);
+        empty($data['landMark']) ? true : $dump->setLandmark($data['landMark']);
+        empty($data['collectDay']) ? true : $dump->setCollectDay($data['collectDay']);
+        empty(($data['coordinate'])) ? true : $dump->setCoordonate($data['coordinate']);
+        empty($data['damage']) ? true : $dump->setDammage($data['damage']);
+        empty($data['isFull']) ? true : $dump->setIsFull($data['isFull']);
+        empty($data['isEnable']) ? true : $dump->setIsEnable($data['isEnable']);
+        empty($data['nameCity']) ? true : $dump->setCityName($data['nameCity']);
+        empty($data['countryCode']) ? true : $dump->setCityName($data['countryCode']);
+        $dump->setUpdatedAt(new \Datetime("now"));
+        $this->manager->flush();
     }
+
 
     public function deleteDump(GlassDump $dump)
     {
         $this->manager->remove($dump);
         $this->manager->flush();
+
     }
 }
