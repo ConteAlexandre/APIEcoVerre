@@ -28,7 +28,7 @@ class GlassDumpRepository extends ServiceEntityRepository
     }
 
 
-    public function saveDump($numBorn,$volume,$landMark,$collectDay,$coordonate,$idCity)
+    public function saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $damage, $is_full, $is_enable, $idCity)
     {
         $newBen = new GlassDump();
 
@@ -36,10 +36,10 @@ class GlassDumpRepository extends ServiceEntityRepository
         empty($volume) ? true  : $newBen->setVolume($volume);
         empty($landMark) ? true  : $newBen->setLandmark($landMark);
         empty($collectDay) ?  true : $newBen->setCollectDay($collectDay);
-        empty($coordonate) ? true : $newBen->setCoordonate("POINT($coordonate)");
-        $newBen->setDammage(FALSE);
-        $newBen->setIsFull(FALSE);
-        $newBen->setIsEnable(TRUE);
+        empty($coordonate) ? true : $newBen->setCoordonate('POINT('.$coordonate.')');
+        $damage = $newBen->setDammage(FALSE);
+        $is_full = $newBen->setIsFull(FALSE);
+        $is_enable = $newBen->setIsEnable(TRUE);
         empty($idCity) ? true : $newBen->setCityUuid($idCity);
 
         $this->manager->persist($newBen);
@@ -52,7 +52,7 @@ class GlassDumpRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('g')
             ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
+            ->setParameter('val', $data)
             ->orderBy('g.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()

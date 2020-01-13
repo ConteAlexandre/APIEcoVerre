@@ -38,7 +38,7 @@ class GlassDumpController
         $volume = $data['volume'];
         $landMark = $data['landMark'];
         $collectDay = $data['collectDay'];
-        $coordonate = $data['coordonate'];
+        $coordonate = $data['coordinates'];
         $damage = $data['damage'];
         $is_full = $data['isFull'];
         $is_enable = $data['isEnable'];
@@ -126,7 +126,7 @@ class GlassDumpController
     }
 
     /**
-     * @Route("/createFromFile", name="add_glassDump", methods={"POST"})
+     * @Route("/createFromFile", name="add_glassDumps", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */

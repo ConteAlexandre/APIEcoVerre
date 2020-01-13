@@ -41,10 +41,11 @@ class CityRepository extends ServiceEntityRepository
     public function updateCity(City $city, $data) //a debug (succès mais pas de modification)
     {
         //vérification intégrité et validité des données
-        empty($name) ? true : $city->setName($data['name']);
-        empty($county_code) ? true : $city->setCountyCode($data['countyCode']);
-        empty($region) ? true : $city->setRegion($data['region']);
-        empty($mail_city) ? true : $city->setMailCity($data['mailCity']);
+
+        empty($city->getName()) ? true : $city->setName($data['name']);
+        empty($city->getCountyCode()) ? true : $city->setCountyCode($data['countyCode']);
+        empty($city->getRegion()) ? true : $city->setRegion($data['region']);
+        empty($city->getMailCity()) ? true : $city->setMailCity($data['mailCity']);
         $city->setUpdatedAt(new \Datetime("now"));
         $this->manager->flush();
     }

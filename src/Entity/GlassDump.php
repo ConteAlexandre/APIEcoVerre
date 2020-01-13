@@ -74,7 +74,20 @@ class GlassDump
 
     private $id_bin;
 
+    /**
+     * @ORM\Column(type="string")
+     */
     private $city_uuid;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $cityName;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $countryCode;
 
     public function __construct()
     {
@@ -217,6 +230,30 @@ class GlassDump
     public function setCityUuid($city_uuid)
     {
         $this->city_uuid = $city_uuid;
+
+        return $this;
+    }
+
+    public function getCityName(): ?string
+    {
+        return $this->cityName;
+    }
+
+    public function setCityName(string $cityName): self
+    {
+        $this->cityName = $cityName;
+
+        return $this;
+    }
+
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
+    }
+
+    public function setCountryCode(string $countryCode): self
+    {
+        $this->countryCode = $countryCode;
 
         return $this;
     }
