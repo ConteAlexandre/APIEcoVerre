@@ -141,48 +141,48 @@ class GlassDumpController
         $info = $parsed_json{"features"};
 
         $erreur = array(
-            "id" => 0,
-            "coordonnée" => 0,
-            "nomville" => 0,
-            "codepostal" => 0,
-            "adresse" => 0,
+            "numBorn" => 0,
+            "landMark" => 0,
+            "coordonate" => 0,
+            "nameCity" => 0,
+            "countryCode" => 0,
         );
         $compteur = 0;
 
         foreach ($info as $glassdump) {
 
-            if (!empty($glassdump{'geometry'}{'coordinates'}[0]) and !empty($glassdump{'geometry'}{'coordinates'}[1])) {
-                $coord = $glassdump{'geometry'}{'coordinates'}[1] . ' ' . $glassdump{'geometry'}{'coordinates'}[0];
-            } else {
-                $erreur["coordonnée"]++;
-            }
             if (!empty($glassdump{'properties'}{'id'}) && is_string($glassdump{'properties'}{'id'})) {
-                $iddump = ($glassdump{'properties'}{'id'});
+                $numBorn = ($glassdump{'properties'}{'id'});
             } else {
-                $erreur["id"]++;
-            }
-            if (!empty($glassdump{'properties'}{'commune'}) && is_string($glassdump{'properties'}{'commune'})) {
-                $nomVille = ucfirst(strtolower($glassdump{'properties'}{'commune'}));
-            } else {
-                $erreur["nomville"]++;
-            }
-            if (!empty($glassdump{'properties'}{'code_com'}) && is_numeric($glassdump{'properties'}{'code_com'})) {
-                $codePost = $glassdump{'properties'}{'code_com'};
-            } else {
-                $erreur["codepostal"]++;
+                $erreur["numBorn"]++;
             }
             if (!empty($glassdump{'properties'}{'adresse'}) && is_string($glassdump{'properties'}{'adresse'})) {
-                $adresse = $glassdump{'properties'}{'adresse'};
+                $landMark = $glassdump{'properties'}{'adresse'};
             } else {
-                $erreur["adresse"]++;
+                $erreur["landMark"]++;
+            }
+            if (!empty($glassdump{'geometry'}{'coordinates'}[0]) and !empty($glassdump{'geometry'}{'coordinates'}[1])) {
+                $coordonate = $glassdump{'geometry'}{'coordinates'}[1] . ' ' . $glassdump{'geometry'}{'coordinates'}[0];
+            } else {
+                $erreur["coordonate"]++;
+            }
+            if (!empty($glassdump{'properties'}{'commune'}) && is_string($glassdump{'properties'}{'commune'})) {
+                $nameCity = ucfirst(strtolower($glassdump{'properties'}{'commune'}));
+            } else {
+                $erreur["nameCity"]++;
+            }
+            if (!empty($glassdump{'properties'}{'code_com'}) && is_numeric($glassdump{'properties'}{'code_com'})) {
+                $countryCode = $glassdump{'properties'}{'code_com'};
+            } else {
+                $erreur["countryCode"]++;
             }
             $compteur++;
 
-            $this->glassDumpRepository->saveDump();
+            $this->glassDumpRepository->saveDump($numBorn, null, $landMark, null, $coordonate, $nameCity, $countryCode);
             unset($iddump, $coord, $nomVille, $codePost);
         }
 
-        $allglassdump['debug']['total'] = count($info);
+/*        $allglassdump['debug']['total'] = count($info);
         $allglassdump['debug']['valide'] = $compteur;
         $allglassdump['debug']['erreur_majeure'] = count($info) - $compteur;
         $allglassdump['debug']['erreur_mineure'] = $erreur['id'];
@@ -190,9 +190,9 @@ class GlassDumpController
         $allglassdump['debug']['adresse'] = $erreur['adresse'];
         $allglassdump['debug']['codepostal'] = $erreur['codepostal'];
         $allglassdump['debug']['nomville'] = $erreur['nomville'];
-        $allglassdump['debug']['id'] = $erreur['id'];
+        $allglassdump['debug']['id'] = $erreur['id'];*/
 
-        return new JsonResponse($allglassdump, Response::HTTP_CREATED);
+        return new JsonResponse($erreur, Response::HTTP_CREATED);
     }
 
 }

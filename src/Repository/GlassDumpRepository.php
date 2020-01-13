@@ -29,7 +29,7 @@ class GlassDumpRepository extends ServiceEntityRepository
     }
 
 
-    public function saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $damage, $is_full, $is_enable, $nameCity, $countryCode)
+    public function saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $nameCity, $countryCode)
     {
         $newBen = new GlassDump();
 
@@ -38,9 +38,9 @@ class GlassDumpRepository extends ServiceEntityRepository
         empty($landMark) ? true  : $newBen->setLandmark($landMark);
         empty($collectDay) ?  true : $newBen->setCollectDay($collectDay);
         empty($coordonate) ? true : $newBen->setCoordonate('POINT('.$coordonate.')');
-        $damage = $newBen->setDammage(FALSE);
-        $is_full = $newBen->setIsFull(FALSE);
-        $is_enable = $newBen->setIsEnable(TRUE);
+         $newBen->setDammage(FALSE);
+        $newBen->setIsFull(FALSE);
+         $newBen->setIsEnable(TRUE);
         empty($nameCity) ? true : $newBen->setCityName($nameCity);
         empty($countryCode) ? true : $newBen->setCountryCode($countryCode);
 
