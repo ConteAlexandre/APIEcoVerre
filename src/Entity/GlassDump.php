@@ -75,11 +75,6 @@ class GlassDump
     private $id_bin;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    private $city_uuid;
-
-    /**
      * @ORM\Column(type="string", length=100)
      */
     private $cityName;
@@ -222,17 +217,6 @@ class GlassDump
         return $this;
     }
 
-    public function getCityUuid(): ?City
-    {
-        return $this->city_uuid;
-    }
-
-    public function setCityUuid($city_uuid)
-    {
-        $this->city_uuid = $city_uuid;
-
-        return $this;
-    }
 
     public function getCityName(): ?string
     {

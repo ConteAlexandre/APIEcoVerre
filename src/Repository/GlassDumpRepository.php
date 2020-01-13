@@ -28,7 +28,7 @@ class GlassDumpRepository extends ServiceEntityRepository
     }
 
 
-    public function saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $damage, $is_full, $is_enable, $idCity)
+    public function saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $damage, $is_full, $is_enable, $nameCity, $countryCode)
     {
         $newBen = new GlassDump();
 
@@ -40,7 +40,8 @@ class GlassDumpRepository extends ServiceEntityRepository
         $damage = $newBen->setDammage(FALSE);
         $is_full = $newBen->setIsFull(FALSE);
         $is_enable = $newBen->setIsEnable(TRUE);
-        empty($idCity) ? true : $newBen->setCityUuid($idCity);
+        empty($nameCity) ? true : $newBen->setCityName($nameCity);
+        empty($countryCode) ? true : $newBen->setCountryCode($countryCode);
 
         $this->manager->persist($newBen);
         $this->manager->flush();

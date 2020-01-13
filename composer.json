@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "jsor/doctrine-postgis": "^1.7",
+        "phpunit/phpunit": "8.5.2",
         "ramsey/uuid-doctrine": "^1.5",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/console": "5.0.*",

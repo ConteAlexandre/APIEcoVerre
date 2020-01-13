@@ -42,12 +42,13 @@ class GlassDumpController
         $damage = $data['damage'];
         $is_full = $data['isFull'];
         $is_enable = $data['isEnable'];
-        $idCity = $data['idCity'];
+        $nameCity = $data['nameCity'];
+        $countryCode = $data['countryCode'];
 
-        if (empty($numBorn) || empty($volume) || empty($landMark) || empty($collectDay) || empty($coordonate) || empty($damage) || empty($is_full) || empty($is_enable) || empty($idCity)) {
+        if (empty($numBorn) || empty($volume) || empty($landMark) || empty($collectDay) || empty($coordonate) || empty($damage) || empty($is_full) || empty($is_enable)  || empty($nameCity) || empty($countryCode)) {
             throw new NotFoundHttpException('Expecting mandatory parameters!');
         }
-        $this->glassDumpRepository->saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $damage, $is_full, $is_enable, $idCity);
+        $this->glassDumpRepository->saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $damage, $is_full, $is_enable, $nameCity, $countryCode);
         return new JsonResponse(['status' => 'GlassDump create !'], Response::HTTP_CREATED);
     }
 
