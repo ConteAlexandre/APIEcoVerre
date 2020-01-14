@@ -146,11 +146,12 @@ class GlassDumpController
      */
     public function getByGPS($gps)
     {
-        $pts = explode(",", $gps);
-        $pts1 = $pts[0];
-        $pts2 = $pts[1];
-        $dumps = $this->glassDumpRepository->nextTo($pts1, $pts2);
-
-        return new JsonResponse(['GlassDump' => $dumps], Response::HTTP_OK);
+        $dumps = $this->glassDumpRepository->nextTo($gps);
+        if ($dumps === false) {
+            return new JsonResponse(['erreur' => "Pas de résultat ou coordonnées non valides"], Response::HTTP_OK);
+        }
+        else {
+            return new JsonResponse(['GlassDump' => $dumps], Response::HTTP_OK);
+        }
     }
 }

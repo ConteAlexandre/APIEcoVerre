@@ -6,6 +6,7 @@ use App\Entity\GlassDump;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -137,16 +138,20 @@ class GlassDumpRepository extends ServiceEntityRepository
         $this->manager->flush();
     }
 
-    public function nextTo($pts1, $pts2)
+    public function nextTo($gps)
     {
         $rayon = 5000;
+
+        $pts = explode(",", $gps);
+        if (!empty($pts[0]) && is_string($pts[0])) {$pts1 = $pts[0];} else { return False;}
+        if (!empty($pts[1]) && is_string($pts[1])) {$pts2 = $pts[1];} else { return False;}
+
         $query = $this->createQueryBuilder('b')
             ->where("ST_DWithin(b.coordonate, Geography(ST_SetSRID(ST_Point(:val1,:val2),4326)), :val3) = true")
             ->setParameter(':val1', $pts1)
             ->setParameter(':val2', $pts2)
             ->setParameter(':val3', $rayon)
-            ->select('b.landmark', 'b.coordonate', 'b.dammage', 'b.is_full', 'b.city_name', 'b.country_code', 'b.number_borne', 'b.created_at', 'b.updated_at')
-            ->getQuery();
-        return $query->getResult();
+            ;
+        return $query->getQuery()->getResult(Query::HYDRATE_ARRAY);
     }
 }
