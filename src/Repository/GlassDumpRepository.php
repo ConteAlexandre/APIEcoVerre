@@ -33,17 +33,16 @@ class GlassDumpRepository extends ServiceEntityRepository
     {
         $newBen = new GlassDump();
 
-        empty($numBorn) ? true  : $newBen->setNumberBorne($numBorn);
-        empty($volume) ? true  : $newBen->setVolume($volume);
-        empty($landMark) ? true  : $newBen->setLandmark($landMark);
-        empty($collectDay) ?  true : $newBen->setCollectDay($collectDay);
-        empty($coordonate) ? true : $newBen->setCoordonate('POINT('.$coordonate.')');
-         $newBen->setDammage(FALSE);
-        $newBen->setIsFull(FALSE);
-         $newBen->setIsEnable(TRUE);
-
+        empty($numBorn) ? true : $newBen->setNumberBorne($numBorn);
+        empty($volume) ? true : $newBen->setVolume($volume);
+        empty($landMark) ? true : $newBen->setLandmark($landMark);
+        empty($collectDay) ? true : $newBen->setCollectDay($collectDay);
+        empty($coordonate) ? true : $newBen->setCoordonate('POINT(' . $coordonate . ')');
         empty($nameCity) ? true : $newBen->setCityName($nameCity);
         empty($countryCode) ? true : $newBen->setCountryCode($countryCode);
+        $newBen->setDammage(FALSE);
+        $newBen->setIsFull(FALSE);
+        $newBen->setIsEnable(TRUE);
 
         $this->manager->persist($newBen);
         $this->manager->flush();
@@ -138,20 +137,25 @@ class GlassDumpRepository extends ServiceEntityRepository
         $this->manager->flush();
     }
 
-    public function nextTo($gps)
+    public function nextTo($gps, $rayon)
     {
-        $rayon = 5000;
-
         $pts = explode(",", $gps);
-        if (!empty($pts[0]) && is_string($pts[0])) {$pts1 = $pts[0];} else { return False;}
-        if (!empty($pts[1]) && is_string($pts[1])) {$pts2 = $pts[1];} else { return False;}
+        if (!empty($pts[0]) && is_numeric($pts[0])) {
+            $pts1 = $pts[0];
+        } else {
+            return "coordonnees invalide (separateur ,)";
+        }
+        if (!empty($pts[1]) && is_numeric($pts[1])) {
+            $pts2 = $pts[1];
+        } else {
+            return "coordonnees invalide (separateur ,)";
+        }
 
         $query = $this->createQueryBuilder('b')
             ->where("ST_DWithin(b.coordonate, Geography(ST_SetSRID(ST_Point(:val1,:val2),4326)), :val3) = true")
             ->setParameter(':val1', $pts1)
             ->setParameter(':val2', $pts2)
-            ->setParameter(':val3', $rayon)
-            ;
+            ->setParameter(':val3', $rayon);
         return $query->getQuery()->getResult(Query::HYDRATE_ARRAY);
     }
 }

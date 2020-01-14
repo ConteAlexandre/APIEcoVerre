@@ -33,23 +33,29 @@ class GlassDumpController
     public function addGlassDump(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-
         $numBorn = $data['numBorn'];
         $volume = $data['volume'];
         $landMark = $data['landMark'];
         $collectDay = $data['collectDay'];
         $coordonate = $data['coordinates'];
-        $damage = $data['damage'];
-        $is_full = $data['isFull'];
-        $is_enable = $data['isEnable'];
         $nameCity = $data['nameCity'];
         $countryCode = $data['countryCode'];
 
-        if (empty($numBorn) || empty($volume) || empty($landMark) || empty($collectDay) || empty($coordonate) || empty($damage) || empty($is_full) || empty($is_enable) || empty($nameCity) || empty($countryCode)) {
-            throw new NotFoundHttpException('Expecting mandatory parameters!');
+        $dump = $this->glassDumpRepository->findOneBy(['number_borne' => $numBorn]);
+
+        if (empty($data['numBorn']) || empty($data['volume']) || empty($data['landMark']) || empty($data['collectDay']) || empty($data['coordinates']) || empty($data['damage']) || empty($data['isFull']) || empty($data['isEnable']) || empty($data['nameCity']) || empty($data['countryCode'])) {
+            return new JsonResponse('Missing parameter - please try again');
         }
-        $this->glassDumpRepository->saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $nameCity, $countryCode);
-        return new JsonResponse(['status' => 'GlassDump create !'], Response::HTTP_CREATED);
+
+        $dump = $this->glassDumpRepository->findOneBy(['number_borne' => $numBorn]);
+
+        if (empty($dump)) {
+            $this->glassDumpRepository->saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $nameCity, $countryCode);
+            return new JsonResponse(['status' => 'new glass dump created !'], Response::HTTP_CREATED);
+        }
+        else {
+            return new JsonResponse('glass dump already exist');
+        }
     }
 
     /**
@@ -57,25 +63,31 @@ class GlassDumpController
      */
     public function getOneDump($id)
     {
+        if (!is_string($id) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $id) !== 1)) {
+            return new JsonResponse(['status' => "not the good format of id"], Response::HTTP_OK);
+        }
+
         $dump = $this->glassDumpRepository->findOneBy(['id' => $id]);
-        $data = [
-            'id' => $dump->getId(),
-            'numBorn' => $dump->getNumberBorne(),
-            'volume' => $dump->getVolume(),
-            'landMark' => $dump->getLandmark(),
-            'collectDay' => $dump->getCollectDay(),
-            'coordinate' => $dump->getCoordonate(),
-            'damage' => $dump->getDammage(),
-            'isFull' => $dump->getIsFull(),
-            'isEnable' => $dump->getIsEnable(),
-            'nameCity' => $dump->getCityName(),
-            'countryCode' => $dump->getCountryCode(),
-            'createdAt' => $dump->getCreatedAt(),
-            'updatedAt' => $dump->getUpdatedAt(),
-        ];
-
-        return new JsonResponse(['GlassDump' => $data], Response::HTTP_OK);
-
+        if (!empty($dump)) {
+            $data = [
+                'id' => $dump->getId(),
+                'numBorn' => $dump->getNumberBorne(),
+                'volume' => $dump->getVolume(),
+                'landMark' => $dump->getLandmark(),
+                'collectDay' => $dump->getCollectDay(),
+                'coordinate' => $dump->getCoordonate(),
+                'damage' => $dump->getDammage(),
+                'isFull' => $dump->getIsFull(),
+                'isEnable' => $dump->getIsEnable(),
+                'nameCity' => $dump->getCityName(),
+                'countryCode' => $dump->getCountryCode(),
+                'createdAt' => $dump->getCreatedAt(),
+                'updatedAt' => $dump->getUpdatedAt(),
+            ];
+            return new JsonResponse(['status' => $data], Response::HTTP_OK);
+        } else {
+            return new JsonResponse(['erreur' => "Not valid Id"], Response::HTTP_OK);
+        }
     }
 
     /**
@@ -84,23 +96,27 @@ class GlassDumpController
     public function getAllDump(): JsonResponse
     {
         $dumps = $this->glassDumpRepository->findAll();
-        foreach ($dumps as $dump) {
-            $data[] = [
-                'id' => $dump->getId(),
-                'numBorn' => $dump->getNumberBorne(),
-                'volume' => $dump->getVolume(),
-                'landMark' => $dump->getLandmark(),
-                'collectDay' => $dump->getCollectDay(),
-                'coordonate' => $dump->getCoordonate(),
-                'damage' => $dump->getDammage(),
-                'isFull' => $dump->getIsFull(),
-                'isEnable' => $dump->getIsEnable(),
-                'idCity' => $dump->getId(),
-                'createdAt' => $dump->getCreatedAt(),
-                'updatedAt' => $dump->getUpdatedAt(),
-            ];
+        if (!empty($dumps)) {
+            foreach ($dumps as $dump) {
+                $data[] = [
+                    'id' => $dump->getId(),
+                    'numBorn' => $dump->getNumberBorne(),
+                    'volume' => $dump->getVolume(),
+                    'landMark' => $dump->getLandmark(),
+                    'collectDay' => $dump->getCollectDay(),
+                    'coordonate' => $dump->getCoordonate(),
+                    'damage' => $dump->getDammage(),
+                    'isFull' => $dump->getIsFull(),
+                    'isEnable' => $dump->getIsEnable(),
+                    'idCity' => $dump->getId(),
+                    'createdAt' => $dump->getCreatedAt(),
+                    'updatedAt' => $dump->getUpdatedAt(),
+                ];
+            }
+            return new JsonResponse(['status ' => $data], Response::HTTP_OK);
+        } else {
+            return new JsonResponse(['erreur ' => 'No data'], Response::HTTP_OK);
         }
-        return new JsonResponse(['GlassDumps ' => $data], Response::HTTP_OK);
     }
 
     /**
@@ -111,20 +127,34 @@ class GlassDumpController
      */
     public function updateDump($id, Request $request)
     {
+        if (!is_string($id) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $id) !== 1)) {
+            return new JsonResponse(['status' => "not the good format of id"], Response::HTTP_OK);
+        }
         $dump = $this->glassDumpRepository->findOneBy(['id' => $id]);
         $data = json_decode($request->getContent(), true);
-        $this->glassDumpRepository->updateDump($dump, $data);
-        return new JsonResponse(['status' => 'GlassDump update !']);
+        if (!empty($dump) && !empty($data)) {
+            $this->glassDumpRepository->updateDump($dump, $data);
+            return new JsonResponse(['status' => 'GlassDump update !']);
+        } else {
+            return new JsonResponse(['erreur' => 'Not valid data given']);
+        }
     }
 
     /**
      * @Route("/delete/{id}", name="delete_dump", methods={"DELETE"})
      */
-    public function deleteDump($id)
+    public function deleteDump($id) //faire sécurité admin
     {
+        if (!is_string($id) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $id) !== 1)) {
+            return new JsonResponse(['status' => "not the good format of id"], Response::HTTP_OK);
+        }
         $dump = $this->glassDumpRepository->findOneBy(['id' => $id]);
-        $this->glassDumpRepository->deleteDump($dump);
-        return new JsonResponse(['status' => 'GlassDump deleted']);
+        if (!empty($dump)) {
+            $this->glassDumpRepository->deleteDump($dump);
+            return new JsonResponse(['status' => 'GlassDump deleted']);
+        } else {
+            return new JsonResponse(['erreur' => 'Not valid Id']);
+        }
     }
 
     /**
@@ -146,12 +176,12 @@ class GlassDumpController
      */
     public function getByGPS($gps)
     {
-        $dumps = $this->glassDumpRepository->nextTo($gps);
+        $rayon = 2000;
+        $dumps = $this->glassDumpRepository->nextTo($gps, $rayon);
         if ($dumps === false) {
-            return new JsonResponse(['erreur' => "Pas de résultat ou coordonnées non valides"], Response::HTTP_OK);
-        }
-        else {
-            return new JsonResponse(['GlassDump' => $dumps], Response::HTTP_OK);
+            return new JsonResponse(['erreur' => $dumps], Response::HTTP_OK);
+        } else {
+            return new JsonResponse(['status' => $dumps], Response::HTTP_OK);
         }
     }
 }
