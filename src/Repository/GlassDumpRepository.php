@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\City;
 use App\Entity\GlassDump;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -29,15 +28,15 @@ class GlassDumpRepository extends ServiceEntityRepository
     }
 
 
-    public function saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $damage, $is_full, $is_enable, $nameCity, $countryCode)
+    public function saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $nameCity, $countryCode)
     {
         $newBen = new GlassDump();
 
-        empty($numBorn) ? true  : $newBen->setNumberBorne($numBorn);
-        empty($volume) ? true  : $newBen->setVolume($volume);
-        empty($landMark) ? true  : $newBen->setLandmark($landMark);
-        empty($collectDay) ?  true : $newBen->setCollectDay($collectDay);
-        empty($coordonate) ? true : $newBen->setCoordonate('POINT('.$coordonate.')');
+        empty($numBorn) ? true : $newBen->setNumberBorne($numBorn);
+        empty($volume) ? true : $newBen->setVolume($volume);
+        empty($landMark) ? true : $newBen->setLandmark($landMark);
+        empty($collectDay) ? true : $newBen->setCollectDay($collectDay);
+        empty($coordonate) ? true : $newBen->setCoordonate('POINT(' . $coordonate . ')');
         $damage = $newBen->setDammage(FALSE);
         $is_full = $newBen->setIsFull(FALSE);
         $is_enable = $newBen->setIsEnable(TRUE);
@@ -46,8 +45,73 @@ class GlassDumpRepository extends ServiceEntityRepository
 
         $this->manager->persist($newBen);
         $this->manager->flush();
+    }
 
+    public function savedumpfile($info)
+    {
+        $compteur = 0;
+        $erreur = array(
+            "numBorn" => 0,
+            "landMark" => 0,
+            "coordonate" => 0,
+            "nameCity" => 0,
+            "countryCode" => 0,
+        );
 
+        foreach ($info as $glassdump) {
+
+            $newBen = new GlassDump();
+
+            if (!empty($glassdump{'properties'}{'id'}) && is_string($glassdump{'properties'}{'id'})) {
+                $numBorn = ($glassdump{'properties'}{'id'});
+            } else {
+                $erreur["numBorn"]++;
+            }
+            if (!empty($glassdump{'properties'}{'adresse'}) && is_string($glassdump{'properties'}{'adresse'})) {
+                $landMark = $glassdump{'properties'}{'adresse'};
+            } else {
+                $erreur["landMark"]++;
+            }
+            if (!empty($glassdump{'geometry'}{'coordinates'}[0]) and !empty($glassdump{'geometry'}{'coordinates'}[1])) {
+                $coordonate = $glassdump{'geometry'}{'coordinates'}[0] . ' ' . $glassdump{'geometry'}{'coordinates'}[1];
+            } else {
+                $erreur["coordonate"]++;
+            }
+            if (!empty($glassdump{'properties'}{'commune'}) && is_string($glassdump{'properties'}{'commune'})) {
+                $nameCity = ucfirst(strtolower($glassdump{'properties'}{'commune'}));
+            } else {
+                $erreur["nameCity"]++;
+            }
+            if (!empty($glassdump{'properties'}{'code_com'}) && is_numeric($glassdump{'properties'}{'code_com'})) {
+                $countryCode = $glassdump{'properties'}{'code_com'};
+            } else {
+                $erreur["countryCode"]++;
+            }
+            $compteur++;
+
+            $newBen->setNumberBorne($numBorn);
+            $newBen->setVolume(Null);
+            $newBen->setLandmark($landMark);
+            $newBen->setCollectDay(Null);
+            $newBen->setCoordonate('POINT(' . $coordonate . ')');
+            $newBen->setDammage(FALSE);
+            $newBen->setIsFull(FALSE);
+            $newBen->setIsEnable(TRUE);
+            $newBen->setCityName($nameCity);
+            $newBen->setCountryCode($countryCode);
+
+            $this->manager->persist($newBen);
+        }
+        $this->manager->flush();
+        /*$allglassdump['debug']['total'] = count($info);
+        $allglassdump['debug']['valide'] = $compteur;
+        $allglassdump['debug']['erreur_majeure'] = count($info) - $compteur;
+        $allglassdump['debug']['erreur_mineure'] = $erreur['id'];
+        $allglassdump['debug']['coordonnée'] = $erreur['coordonnée'];
+        $allglassdump['debug']['adresse'] = $erreur['adresse'];
+        $allglassdump['debug']['codepostal'] = $erreur['codepostal'];
+        $allglassdump['debug']['nomville'] = $erreur['nomville'];
+        $allglassdump['debug']['id'] = $erreur['id'];*/ //gestion erreur
     }
 
     public function updateDump(GlassDump $dump, $data)
@@ -66,11 +130,22 @@ class GlassDumpRepository extends ServiceEntityRepository
         $this->manager->flush();
     }
 
-
     public function deleteDump(GlassDump $dump)
     {
         $this->manager->remove($dump);
         $this->manager->flush();
+    }
 
+    public function nextTo($pts1, $pts2)
+    {
+        $rayon = 5000;
+        $query = $this->createQueryBuilder('b')
+            ->where("ST_DWithin(b.coordonate, Geography(ST_SetSRID(ST_Point(:val1,:val2),4326)), :val3) = true")
+            ->setParameter(':val1', $pts1)
+            ->setParameter(':val2', $pts2)
+            ->setParameter(':val3', $rayon)
+            ->select('b.landmark', 'b.coordonate', 'b.dammage', 'b.is_full', 'b.city_name', 'b.country_code', 'b.number_borne', 'b.created_at', 'b.updated_at')
+            ->getQuery();
+        return $query->getResult();
     }
 }

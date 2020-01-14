@@ -45,10 +45,10 @@ class GlassDumpController
         $nameCity = $data['nameCity'];
         $countryCode = $data['countryCode'];
 
-        if (empty($numBorn) || empty($volume) || empty($landMark) || empty($collectDay) || empty($coordonate) || empty($damage) || empty($is_full) || empty($is_enable)  || empty($nameCity) || empty($countryCode)) {
+        if (empty($numBorn) || empty($volume) || empty($landMark) || empty($collectDay) || empty($coordonate) || empty($damage) || empty($is_full) || empty($is_enable) || empty($nameCity) || empty($countryCode)) {
             throw new NotFoundHttpException('Expecting mandatory parameters!');
         }
-        $this->glassDumpRepository->saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $damage, $is_full, $is_enable, $nameCity, $countryCode);
+        $this->glassDumpRepository->saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $nameCity, $countryCode);
         return new JsonResponse(['status' => 'GlassDump create !'], Response::HTTP_CREATED);
     }
 
@@ -81,7 +81,6 @@ class GlassDumpController
     /**
      * @Route("/list", name="get_all_dump", methods={"GET"})
      */
-
     public function getAllDump(): JsonResponse
     {
         $dumps = $this->glassDumpRepository->findAll();
@@ -102,9 +101,7 @@ class GlassDumpController
             ];
         }
         return new JsonResponse(['GlassDumps ' => $data], Response::HTTP_OK);
-
     }
-
 
     /**
      * @Route("/update/{id}", name="update_dump", methods={"PUT"})
@@ -139,60 +136,21 @@ class GlassDumpController
     {
         $parsed_json = json_decode($request->getContent(), true);
         $info = $parsed_json{"features"};
+        $this->glassDumpRepository->savedumpfile($info);
 
-        $erreur = array(
-            "id" => 0,
-            "coordonnée" => 0,
-            "nomville" => 0,
-            "codepostal" => 0,
-            "adresse" => 0,
-        );
-        $compteur = 0;
-
-        foreach ($info as $glassdump) {
-
-            if (!empty($glassdump{'geometry'}{'coordinates'}[0]) and !empty($glassdump{'geometry'}{'coordinates'}[1])) {
-                $coord = $glassdump{'geometry'}{'coordinates'}[1] . ' ' . $glassdump{'geometry'}{'coordinates'}[0];
-            } else {
-                $erreur["coordonnée"]++;
-            }
-            if (!empty($glassdump{'properties'}{'id'}) && is_string($glassdump{'properties'}{'id'})) {
-                $iddump = ($glassdump{'properties'}{'id'});
-            } else {
-                $erreur["id"]++;
-            }
-            if (!empty($glassdump{'properties'}{'commune'}) && is_string($glassdump{'properties'}{'commune'})) {
-                $nomVille = ucfirst(strtolower($glassdump{'properties'}{'commune'}));
-            } else {
-                $erreur["nomville"]++;
-            }
-            if (!empty($glassdump{'properties'}{'code_com'}) && is_numeric($glassdump{'properties'}{'code_com'})) {
-                $codePost = $glassdump{'properties'}{'code_com'};
-            } else {
-                $erreur["codepostal"]++;
-            }
-            if (!empty($glassdump{'properties'}{'adresse'}) && is_string($glassdump{'properties'}{'adresse'})) {
-                $adresse = $glassdump{'properties'}{'adresse'};
-            } else {
-                $erreur["adresse"]++;
-            }
-            $compteur++;
-
-            $this->glassDumpRepository->saveDump();
-            unset($iddump, $coord, $nomVille, $codePost);
-        }
-
-        $allglassdump['debug']['total'] = count($info);
-        $allglassdump['debug']['valide'] = $compteur;
-        $allglassdump['debug']['erreur_majeure'] = count($info) - $compteur;
-        $allglassdump['debug']['erreur_mineure'] = $erreur['id'];
-        $allglassdump['debug']['coordonnée'] = $erreur['coordonnée'];
-        $allglassdump['debug']['adresse'] = $erreur['adresse'];
-        $allglassdump['debug']['codepostal'] = $erreur['codepostal'];
-        $allglassdump['debug']['nomville'] = $erreur['nomville'];
-        $allglassdump['debug']['id'] = $erreur['id'];
-
-        return new JsonResponse($allglassdump, Response::HTTP_CREATED);
+        return new JsonResponse(['status' => 'GlassDump all add or or updated'], Response::HTTP_CREATED);
     }
 
+    /**
+     * @Route("/dumpNextTo/{gps}", name="get_glassDumps_next", methods={"GET"})
+     */
+    public function getByGPS($gps)
+    {
+        $pts = explode(",", $gps);
+        $pts1 = $pts[0];
+        $pts2 = $pts[1];
+        $dumps = $this->glassDumpRepository->nextTo($pts1, $pts2);
+
+        return new JsonResponse(['GlassDump' => $dumps], Response::HTTP_OK);
+    }
 }
