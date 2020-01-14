@@ -1,0 +1,1229 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API TUTO",
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://api.tuto.fr/v1",
+            "description": "mon api"
+        }
+    ],
+    "paths": {
+        "/registration": {
+            "post": {
+                "tags": [
+                    "Access"
+                ],
+                "operationId": "App\\Controller\\AccesController::registrationController",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Signup"
+                },
+                "responses": {
+                    "200": {
+                        "description": "registration for user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserCreate"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Access"
+                ],
+                "operationId": "App\\Controller\\AccesController::login",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/Signin"
+                },
+                "responses": {
+                    "200": {
+                        "description": "signin is ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserCreate"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/city/list": {
+            "get": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::listCity",
+                "responses": {
+                    "200": {
+                        "description": "Nos Villes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/City"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/city/show/{id}": {
+            "get": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::showCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show City",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/city/create": {
+            "post": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::createCity",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateCity"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Create City",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/city/update/{id}": {
+            "put": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::updateCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateCity"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update City",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/city/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "City"
+                ],
+                "operationId": "App\\Controller\\CityController::deleteCity",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete City",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CitySingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/glassdump/list": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::listGlassDump",
+                "responses": {
+                    "200": {
+                        "description": "This GlassDump",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpList"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/glassdump/show/{id}": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::showGlassDumpId",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "GlassDump",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/glassdump/show/{coordonate}": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::showGlassDumpGeo",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/coordonate"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "find glassdump",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpList"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/glassdump/create": {
+            "post": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::createGlassDump",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateGlassDump"
+                },
+                "responses": {
+                    "200": {
+                        "description": "GlassDump create",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/glassdump/update/{id}": {
+            "put": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::updateGlassDump",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateGlassDump"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update Reussi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/glassdump/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::deleteGlassDump",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete Reussi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/historic/list": {
+            "get": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::listHistoric",
+                "responses": {
+                    "200": {
+                        "description": "List Historic",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/historic/show/{id}": {
+            "get": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::showHistoric",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "show single historic",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/historic/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::deleteHistoric",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete Historic",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/users/list": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::listUsers",
+                "responses": {
+                    "200": {
+                        "description": "list Users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Users"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "no authorization",
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/users/show/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::showUsers",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "profile user for admin",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Users"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/user/profile/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::profileUser",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "profile for the user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserProfile"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/user/update/{id}": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::updateUser",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/ProfileUser"
+                },
+                "responses": {
+                    "200": {
+                        "description": "update profile the user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UserProfile"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/users/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "App\\Controller\\UsersController::deleteUsers",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete User",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Users"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "City": {
+                "description": "Schema City Général",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "name",
+                        "type": "string"
+                    },
+                    "county_code": {
+                        "description": "departement",
+                        "type": "integer"
+                    },
+                    "region": {
+                        "description": "name region",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "date création",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CitySingle": {
+                "description": "Listing d'une villle",
+                "properties": {
+                    "mail_city": {
+                        "description": "mail client",
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "description": "date de modif",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/City"
+                    }
+                ]
+            },
+            "GlassDump": {
+                "description": "Schema GlassDump Général",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "number_borne": {
+                        "description": "numéro de la borne",
+                        "type": "integer"
+                    },
+                    "volume": {
+                        "description": "Volume de la Benne total",
+                        "type": "integer"
+                    },
+                    "landmark": {
+                        "description": "point de repère",
+                        "type": "string"
+                    },
+                    "collect_day": {
+                        "description": "Jour de collecte",
+                        "type": "string"
+                    },
+                    "coordonate": {
+                        "description": "geography de postgis",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "created_at": {
+                        "description": "date de création",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "date de de modif",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "dammage": {
+                        "description": "Endommagé ou non",
+                        "type": "boolean"
+                    },
+                    "is_full": {
+                        "description": "Pleine ou non",
+                        "type": "boolean"
+                    },
+                    "is_enable": {
+                        "description": "Active ou non",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "GlassDumpList": {
+                "description": "Schema de lit GlassDump",
+                "properties": {
+                    "number_borne": {
+                        "description": "numéro de la borne",
+                        "type": "integer"
+                    },
+                    "coordonate": {
+                        "description": "geography de postgis",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "created_at": {
+                        "description": "date de création",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "dammage": {
+                        "description": "Endommagé ou non",
+                        "type": "boolean"
+                    },
+                    "is_full": {
+                        "description": "Pleine ou non",
+                        "type": "boolean"
+                    },
+                    "is_enable": {
+                        "description": "Active ou non",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "GlassDumpSingle": {
+                "description": "Only GlassDump",
+                "properties": {
+                    "volume": {
+                        "description": "Volume de la Benne total",
+                        "type": "integer"
+                    },
+                    "landmark": {
+                        "description": "point de repère",
+                        "type": "string"
+                    },
+                    "collect_day": {
+                        "description": "Jour de collecte",
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "description": "date de de modif",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/GlassDumpList"
+                    }
+                ]
+            },
+            "Historic": {
+                "description": "schema Historic Listing",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "user_glassdump_uuid": {
+                        "description": "id user",
+                        "type": "string"
+                    },
+                    "is_full": {
+                        "description": "if glassdump full",
+                        "type": "boolean"
+                    },
+                    "is_damage": {
+                        "description": "if glassdump is break",
+                        "type": "boolean"
+                    },
+                    "is_created": {
+                        "description": "creation date",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Users": {
+                "description": "schema global for user",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "username": {
+                        "description": "username",
+                        "type": "string"
+                    },
+                    "mail": {
+                        "description": "mail of user",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "password of user",
+                        "type": "string"
+                    },
+                    "token": {
+                        "description": "token for forgot password",
+                        "type": "string"
+                    },
+                    "adress": {
+                        "description": "adress of user",
+                        "type": "string"
+                    },
+                    "roles": {
+                        "description": "role for user for wave",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "date created",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "date update",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_enable": {
+                        "description": "activ or not",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "UserCreate": {
+                "description": "schema for sign up",
+                "properties": {
+                    "username": {
+                        "description": "username",
+                        "type": "string"
+                    },
+                    "mail": {
+                        "description": "mail of use",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "password of user",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserProfile": {
+                "description": "update user",
+                "properties": {
+                    "username": {
+                        "description": "username",
+                        "type": "string"
+                    },
+                    "mail": {
+                        "description": "mail of user",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "password of user",
+                        "type": "string"
+                    },
+                    "adress": {
+                        "description": "adress of user",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "NotFound": {
+                "description": "La ressource n'existe pas",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Cette ressource n'existe pas"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "NoAuthorized": {
+                "description": "Vous n'avez pas accès à cette page",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Vous n'avez pas l'autorisation"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "id": {
+                "name": "id",
+                "in": "path",
+                "description": "id de la ressource",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "coordonate": {
+                "name": "coordonate",
+                "in": "path",
+                "description": "coordonate of glassdump",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "requestBodies": {
+            "CreateUpdateCity": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "name",
+                                "county_code",
+                                "region"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "county_code": {
+                                    "type": "integer"
+                                },
+                                "region": {
+                                    "type": "string"
+                                },
+                                "mail_city": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "CreateUpdateGlassDump": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "number_one",
+                                "volume",
+                                "landmark",
+                                "collect_day",
+                                "coordonate"
+                            ],
+                            "properties": {
+                                "number_one": {
+                                    "type": "integer"
+                                },
+                                "volume": {
+                                    "type": "integer"
+                                },
+                                "landmark": {
+                                    "type": "string"
+                                },
+                                "collect_day": {
+                                    "type": "string"
+                                },
+                                "coordonate": {
+                                    "description": "geography PostGis",
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "CreateHistoric": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "user_glassdump_uuid",
+                                "is_full",
+                                "is_damage"
+                            ],
+                            "properties": {
+                                "user_glassdump_uuid": {
+                                    "type": "string"
+                                },
+                                "is_full": {
+                                    "type": "boolean"
+                                },
+                                "is_damage": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "Signin": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "username",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "Signup": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "username",
+                                "mail",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "mail": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "ProfileUser": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "username",
+                                "mail",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "mail": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "adress": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
