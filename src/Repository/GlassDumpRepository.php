@@ -32,14 +32,15 @@ class GlassDumpRepository extends ServiceEntityRepository
     {
         $newBen = new GlassDump();
 
-        empty($numBorn) ? true : $newBen->setNumberBorne($numBorn);
-        empty($volume) ? true : $newBen->setVolume($volume);
-        empty($landMark) ? true : $newBen->setLandmark($landMark);
-        empty($collectDay) ? true : $newBen->setCollectDay($collectDay);
-        empty($coordonate) ? true : $newBen->setCoordonate('POINT(' . $coordonate . ')');
-        $damage = $newBen->setDammage(FALSE);
-        $is_full = $newBen->setIsFull(FALSE);
-        $is_enable = $newBen->setIsEnable(TRUE);
+        empty($numBorn) ? true  : $newBen->setNumberBorne($numBorn);
+        empty($volume) ? true  : $newBen->setVolume($volume);
+        empty($landMark) ? true  : $newBen->setLandmark($landMark);
+        empty($collectDay) ?  true : $newBen->setCollectDay($collectDay);
+        empty($coordonate) ? true : $newBen->setCoordonate('POINT('.$coordonate.')');
+         $newBen->setDammage(FALSE);
+        $newBen->setIsFull(FALSE);
+         $newBen->setIsEnable(TRUE);
+
         empty($nameCity) ? true : $newBen->setCityName($nameCity);
         empty($countryCode) ? true : $newBen->setCountryCode($countryCode);
 
