@@ -51,12 +51,11 @@ class GlassDumpController
 
         if (empty($dump)) {
             $this->glassDumpRepository->saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $nameCity, $countryCode);
-            $reponse= new JsonResponse(['status' => 'new glass dump created !'], Response::HTTP_CREATED);
+            $reponse = new JsonResponse(['status' => 'new glass dump created !'], Response::HTTP_CREATED);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
-        }
-        else {
-            $reponse= new JsonResponse('glass dump already exist');
+        } else {
+            $reponse = new JsonResponse('glass dump already exist');
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
@@ -68,7 +67,7 @@ class GlassDumpController
     public function getOneDump($id)
     {
         if (!is_string($id) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $id) !== 1)) {
-            $reponse= new JsonResponse(['status' => "not the good format of id"], Response::HTTP_OK);
+            $reponse = new JsonResponse(['status' => "not the good format of id"], Response::HTTP_OK);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
@@ -90,11 +89,31 @@ class GlassDumpController
                 'createdAt' => $dump->getCreatedAt(),
                 'updatedAt' => $dump->getUpdatedAt(),
             ];
-            $reponse= new JsonResponse(['status' => $data], Response::HTTP_OK);
+            $bens = "";
+            foreach ($data as $ben) {
+                $bens .= $GeoJsonLine = '
+                    { "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [' . $ben['coordonate'] . ']
+                        },
+                        "properties": {
+                            "commune": "' . $ben['commune'] . '",
+                            "adresse": "' . $ben['landMark'] . '",
+                            "code_com": "' . $ben['code_com'] . '"
+                        }
+                    },';
+            }
+
+            $bens = substr($bens, 0, -1);
+
+
+            $reponse = JsonResponse::fromJsonString('{ "type": "FeatureCollection",
+                "features": ['.$bens.']}');
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         } else {
-            $reponse= new JsonResponse(['erreur' => "Not valid Id"], Response::HTTP_OK);
+            $reponse = new JsonResponse(['erreur' => "Not valid Id"], Response::HTTP_OK);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
@@ -115,6 +134,8 @@ class GlassDumpController
                     'landMark' => $dump->getLandmark(),
                     'collectDay' => $dump->getCollectDay(),
                     'coordonate' => $dump->getCoordonate(),
+                    'commune' => $dump->getCityName(),
+                    'code_com' => $dump->getCountryCode(),
                     'damage' => $dump->getDammage(),
                     'isFull' => $dump->getIsFull(),
                     'isEnable' => $dump->getIsEnable(),
@@ -122,12 +143,34 @@ class GlassDumpController
                     'createdAt' => $dump->getCreatedAt(),
                     'updatedAt' => $dump->getUpdatedAt(),
                 ];
+
             }
-            $reponse= new JsonResponse(['status ' => $data], Response::HTTP_OK);
+            $bens = "";
+            foreach ($data as $ben) {
+               $bens .= $GeoJsonLine = '
+                    { "type": "Feature",
+                        "geometry": {
+                            "type": "Point",
+                            "coordinates": [' . $ben['coordonate'] . ']
+                        },
+                        "properties": {
+                            "commune": "' . $ben['commune'] . '",
+                            "adresse": "' . $ben['landMark'] . '",
+                            "code_com": "' . $ben['code_com'] . '"
+                        }
+                    },';
+            }
+
+            $bens = substr($bens, 0, -1);
+
+
+            $reponse = JsonResponse::fromJsonString('{ "type": "FeatureCollection",
+                "features": ['.$bens.']}');
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
+
         } else {
-            $reponse= new JsonResponse(['erreur ' => 'No data'], Response::HTTP_OK);
+            $reponse = new JsonResponse(['erreur ' => 'No data'], Response::HTTP_OK);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
@@ -142,7 +185,7 @@ class GlassDumpController
     public function updateDump($id, Request $request)
     {
         if (!is_string($id) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $id) !== 1)) {
-            $reponse= new JsonResponse(['status' => "not the good format of id"], Response::HTTP_OK);
+            $reponse = new JsonResponse(['status' => "not the good format of id"], Response::HTTP_OK);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
@@ -150,11 +193,11 @@ class GlassDumpController
         $data = json_decode($request->getContent(), true);
         if (!empty($dump) && !empty($data)) {
             $this->glassDumpRepository->updateDump($dump, $data);
-            $reponse= new JsonResponse(['status' => 'GlassDump update !']);
+            $reponse = new JsonResponse(['status' => 'GlassDump update !']);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         } else {
-            $reponse= new JsonResponse(['erreur' => 'Not valid data given']);
+            $reponse = new JsonResponse(['erreur' => 'Not valid data given']);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
@@ -166,18 +209,18 @@ class GlassDumpController
     public function deleteDump($id) //faire sécurité admin
     {
         if (!is_string($id) || (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $id) !== 1)) {
-            $reponse= new JsonResponse(['status' => "not the good format of id"], Response::HTTP_OK);
+            $reponse = new JsonResponse(['status' => "not the good format of id"], Response::HTTP_OK);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
         $dump = $this->glassDumpRepository->findOneBy(['id' => $id]);
         if (!empty($dump)) {
             $this->glassDumpRepository->deleteDump($dump);
-            $reponse= new JsonResponse(['status' => 'GlassDump deleted']);
+            $reponse = new JsonResponse(['status' => 'GlassDump deleted']);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         } else {
-            $reponse= new JsonResponse(['erreur' => 'Not valid Id']);
+            $reponse = new JsonResponse(['erreur' => 'Not valid Id']);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
@@ -194,7 +237,7 @@ class GlassDumpController
         $info = $parsed_json{"features"};
         $this->glassDumpRepository->savedumpfile($info);
 
-        $reponse= new JsonResponse(['status' => 'GlassDump all add or or updated'], Response::HTTP_CREATED);
+        $reponse = new JsonResponse(['status' => 'GlassDump all add or or updated'], Response::HTTP_CREATED);
         $reponse->headers->set('Access-Control-Allow-Origin', '*');
         return $reponse;
     }
@@ -207,11 +250,11 @@ class GlassDumpController
         $rayon = 2000;
         $dumps = $this->glassDumpRepository->nextToCoord($gps, $rayon);
         if ($dumps === false) {
-            $reponse= new JsonResponse(['erreur' => $dumps], Response::HTTP_OK);
+            $reponse = new JsonResponse(['erreur' => $dumps], Response::HTTP_OK);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         } else {
-            $reponse= new JsonResponse(['status' => $dumps], Response::HTTP_OK);
+            $reponse = new JsonResponse(['status' => $dumps], Response::HTTP_OK);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
@@ -227,17 +270,16 @@ class GlassDumpController
             $dumps = $this->glassDumpRepository->inCity($city);
 
             if ($dumps === false) {
-                $reponse= new JsonResponse(['erreur' => "Wrong city name"], Response::HTTP_OK);
+                $reponse = new JsonResponse(['erreur' => "Wrong city name"], Response::HTTP_OK);
                 $reponse->headers->set('Access-Control-Allow-Origin', '*');
                 return $reponse;
             } else {
-                $reponse= new JsonResponse(['status' => $dumps], Response::HTTP_OK);
+                $reponse = new JsonResponse(['status' => $dumps], Response::HTTP_OK);
                 $reponse->headers->set('Access-Control-Allow-Origin', '*');
                 return $reponse;
             }
-        }
-        else {
-            $reponse= new JsonResponse(['erreur' => "Wrong city name"], Response::HTTP_OK);
+        } else {
+            $reponse = new JsonResponse(['erreur' => "Wrong city name"], Response::HTTP_OK);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
