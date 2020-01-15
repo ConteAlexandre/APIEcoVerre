@@ -143,12 +143,12 @@ class GlassDumpRepository extends ServiceEntityRepository
         if (!empty($pts[0]) && is_numeric($pts[0])) {
             $pts1 = $pts[0];
         } else {
-            return "coordonnees invalide (separateur ,)";
+            return "coordonnees invalide (format to 'lat,lon')";
         }
         if (!empty($pts[1]) && is_numeric($pts[1])) {
             $pts2 = $pts[1];
         } else {
-            return "coordonnees invalide (separateur ',')";
+            return "coordonnees invalide (format to 'lat,lon')";
         }
 
         $query = $this->createQueryBuilder('b')

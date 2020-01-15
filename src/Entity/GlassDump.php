@@ -146,14 +146,14 @@ class GlassDump
 
     public function getCoordonate()
     {
-        $coor = $this->coordonate;
-        $pts = substr($coor, 16, -1);
-        return $pts;
+        $coorSRID = $this->coordonate;
+        $coord = substr($coorSRID, 16, -1); // remove SRID
+        $gps = str_replace(' ', ', ',$coord); //replace space with coma
+        return $gps;
     }
 
     public function setCoordonate($coordonate): self
     {
-        //ST_GeometryFromText('POINT(1.3993400071067 43.70909700286)', 4326);
         $this->coordonate = $coordonate;
 
         return $this;
