@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: 'API TUTO'
+  version: '0.1'
+servers:
+  -
+    url: 'http://api.tuto.fr/v1'
+    description: 'mon api'
+paths:
+  /city/list:
+    get:
+      operationId: 'App\Controller\AdminController::listCity'
+      responses:
+        '200':
+          description: 'Nos Villes'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/City'
+  '/city/{id}':
+    get:
+      operationId: 'App\Controller\AdminController::showCity'
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'id de la ville'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Nos Villes'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/City'
+components:
+  schemas:
+    City:
+      properties:
+        id:
+          description: uuid
+          type: string
+        name:
+          description: name
+          type: string
+        county_code:
+          description: 'Code du département'
+          type: integer
+        region:
+          description: 'nom de region'
+          type: string
+        mail_city:
+          description: 'adresse mail de contact'
+          type: string
+        created_at:
+          description: 'date de création'
+          type: string
+          format: date-time
+        updated_at:
+          description: 'date de modif'
+          type: string
+          format: date-time
+          nullable: true
+      type: object
