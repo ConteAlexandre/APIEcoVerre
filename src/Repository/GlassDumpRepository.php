@@ -148,7 +148,7 @@ class GlassDumpRepository extends ServiceEntityRepository
         if (!empty($pts[1]) && is_numeric($pts[1])) {
             $pts2 = $pts[1];
         } else {
-            return "coordonnees invalide (separateur ,)";
+            return "coordonnees invalide (separateur ',')";
         }
 
         $query = $this->createQueryBuilder('b')

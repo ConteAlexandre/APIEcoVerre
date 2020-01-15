@@ -146,7 +146,9 @@ class GlassDump
 
     public function getCoordonate()
     {
-        return $this->coordonate;
+        $coor = $this->coordonate;
+        $pts = substr($coor, 16, -1);
+        return $pts;
     }
 
     public function setCoordonate($coordonate): self
