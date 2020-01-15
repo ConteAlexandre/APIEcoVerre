@@ -192,9 +192,9 @@ class GlassDumpController
     {
         $parsed_json = json_decode($request->getContent(), true);
         $info = $parsed_json{"features"};
-        $this->glassDumpRepository->savedumpfile($info);
+        $dumps = $this->glassDumpRepository->savedumpfile($info);
 
-        $reponse= new JsonResponse(['status' => 'GlassDump all add or or updated'], Response::HTTP_CREATED);
+        $reponse = new JsonResponse(['status' => $dumps], Response::HTTP_CREATED);
         $reponse->headers->set('Access-Control-Allow-Origin', '*');
         return $reponse;
     }
@@ -211,7 +211,7 @@ class GlassDumpController
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         } else {
-            $reponse= new JsonResponse(['status' => $dumps], Response::HTTP_OK);
+            $reponse = new JsonResponse(['status' => $dumps], Response::HTTP_OK);
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         }
