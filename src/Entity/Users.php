@@ -2,11 +2,7 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UsersRepository")
@@ -14,17 +10,14 @@ use Ramsey\Uuid\UuidInterface;
 class Users
 {
     /**
-     * @var UuidInterface
-     *
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $username;
 
@@ -51,7 +44,7 @@ class Users
     /**
      * @ORM\Column(type="array")
      */
-    private $roles = [];
+    private $role = [];
 
     /**
      * @ORM\Column(type="datetime")
@@ -68,28 +61,7 @@ class Users
      */
     private $is_enable;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $score;
-
-    private $id_bin;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Rank", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $rank_uuid;
-
-    public function __construct()
-    {
-        $this->id_bin = new ArrayCollection();
-        $this->id = Uuid::uuid4();
-        $this->created_at = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-        $this->rank_uuid = new ArrayCollection();
-    }
-
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -99,7 +71,7 @@ class Users
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 
@@ -154,14 +126,14 @@ class Users
         return $this;
     }
 
-    public function getRoles(): ?array
+    public function getRole(): ?array
     {
-        return $this->roles;
+        return $this->role;
     }
 
-    public function setRoles(array $roles): self
+    public function setRole(array $role): self
     {
-        $this->roles = $roles;
+        $this->role = $role;
 
         return $this;
     }
@@ -201,29 +173,4 @@ class Users
 
         return $this;
     }
-
-    public function getScore(): ?int
-    {
-        return $this->score;
-    }
-
-    public function setScore(int $score): self
-    {
-        $this->score = $score;
-
-        return $this;
-    }
-
-    public function getRankUuid(): ?Rank
-    {
-        return $this->rank_uuid;
-    }
-
-    public function setRankUuid(Rank $rank_uuid): self
-    {
-        $this->rank_uuid = $rank_uuid;
-
-        return $this;
-    }
-
 }

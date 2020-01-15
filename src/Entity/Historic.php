@@ -2,10 +2,7 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HistoricRepository")
@@ -13,20 +10,21 @@ use Ramsey\Uuid\UuidInterface;
 class Historic
 {
     /**
-     * @var UuidInterface
-     *
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\UserGlassdump")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=50)
      */
-    private $user_glassdump_uuid;
+    private $user_id;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $glassdump_id;
 
     /**
      * @ORM\Column(type="boolean")
@@ -36,33 +34,48 @@ class Historic
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_dammage;
+    private $is_damage;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $created_at;
 
-    public function __construct()
-    {
-        $this->id_bin = new ArrayCollection();
-        $this->id = Uuid::uuid4();
-        $this->created_at = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
-    }
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updated_at;
 
-    public function getId()
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_check;
+
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserGlassdumpUuid(): ?UserGlassdump
+    public function getUserId(): ?string
     {
-        return $this->user_glassdump_uuid;
+        return $this->user_id;
     }
 
-    public function setUserGlassdumpUuid(?UserGlassdump $user_glassdump_uuid): self
+    public function setUserId(string $user_id): self
     {
-        $this->user_glassdump_uuid = $user_glassdump_uuid;
+        $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getGlassdumpId(): ?string
+    {
+        return $this->glassdump_id;
+    }
+
+    public function setGlassdumpId(string $glassdump_id): self
+    {
+        $this->glassdump_id = $glassdump_id;
 
         return $this;
     }
@@ -79,14 +92,14 @@ class Historic
         return $this;
     }
 
-    public function getIsDammage(): ?bool
+    public function getIsDamage(): ?bool
     {
-        return $this->is_dammage;
+        return $this->is_damage;
     }
 
-    public function setIsDammage(bool $is_dammage): self
+    public function setIsDamage(bool $is_damage): self
     {
-        $this->is_dammage = $is_dammage;
+        $this->is_damage = $is_damage;
 
         return $this;
     }
@@ -99,6 +112,30 @@ class Historic
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getIsCheck(): ?bool
+    {
+        return $this->is_check;
+    }
+
+    public function setIsCheck(bool $is_check): self
+    {
+        $this->is_check = $is_check;
 
         return $this;
     }
