@@ -137,7 +137,7 @@ class GlassDumpRepository extends ServiceEntityRepository
         $this->manager->flush();
     }
 
-    public function nextTo($gps, $rayon)
+    public function nextToCoord($gps, $rayon)
     {
         $pts = explode(",", $gps);
         if (!empty($pts[0]) && is_numeric($pts[0])) {
@@ -157,5 +157,33 @@ class GlassDumpRepository extends ServiceEntityRepository
             ->setParameter(':val2', $pts2)
             ->setParameter(':val3', $rayon);
         return $query->getQuery()->getResult(Query::HYDRATE_ARRAY);
+    }
+
+    public function inCity($city)
+    {
+        $dumps = $this->findBy(['cityName' => $city]);
+        if (!empty($dumps)) {
+            foreach ($dumps as $dump) {
+                $data[] = [
+                    'id' => $dump->getId(),
+                    'numBorn' => $dump->getNumberBorne(),
+                    'volume' => $dump->getVolume(),
+                    'landMark' => $dump->getLandmark(),
+                    'collectDay' => $dump->getCollectDay(),
+                    'coordinate' => $dump->getCoordonate(),
+                    'damage' => $dump->getDammage(),
+                    'isFull' => $dump->getIsFull(),
+                    'isEnable' => $dump->getIsEnable(),
+                    'nameCity' => $dump->getCityName(),
+                    'countryCode' => $dump->getCountryCode(),
+                    'createdAt' => $dump->getCreatedAt(),
+                    'updatedAt' => $dump->getUpdatedAt(),
+                ];
+            }
+            return $data;
+        }
+        else {
+            return false;
+        }
     }
 }

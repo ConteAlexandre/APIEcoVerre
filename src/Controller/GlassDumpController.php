@@ -177,11 +177,31 @@ class GlassDumpController
     public function getByGPS($gps)
     {
         $rayon = 2000;
-        $dumps = $this->glassDumpRepository->nextTo($gps, $rayon);
+        $dumps = $this->glassDumpRepository->nextToCoord($gps, $rayon);
         if ($dumps === false) {
             return new JsonResponse(['erreur' => $dumps], Response::HTTP_OK);
         } else {
             return new JsonResponse(['status' => $dumps], Response::HTTP_OK);
+        }
+    }
+
+    /**
+     * @Route("/dumpIn/{city}", name="get_glassDumps_city", methods={"GET"})
+     */
+    public function getByCity($city)
+    {
+        if (!empty(is_string($city))) {
+            $city = ucfirst(strtolower($city));
+            $dumps = $this->glassDumpRepository->inCity($city);
+
+            if ($dumps === false) {
+                return new JsonResponse(['erreur' => "Wrong city name"], Response::HTTP_OK);
+            } else {
+                return new JsonResponse(['status' => $dumps], Response::HTTP_OK);
+            }
+        }
+        else {
+            return new JsonResponse(['erreur' => "Wrong city name"], Response::HTTP_OK);
         }
     }
 }
