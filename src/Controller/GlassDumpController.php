@@ -33,6 +33,11 @@ class GlassDumpController
     public function addGlassDump(Request $request)
     {
         $data = json_decode($request->getContent(), true);
+
+        if (empty($data['numBorn']) || empty($data['volume']) || empty($data['landMark']) || empty($data['collectDay']) || empty($data['coordinates']) || empty($data['nameCity']) || empty($data['countryCode'])) {
+            return new JsonResponse('Missing parameter - please try again');
+        }
+
         $numBorn = $data['numBorn'];
         $volume = $data['volume'];
         $landMark = $data['landMark'];
@@ -41,13 +46,7 @@ class GlassDumpController
         $nameCity = $data['nameCity'];
         $countryCode = $data['countryCode'];
 
-        $dump = $this->glassDumpRepository->findOneBy(['number_borne' => $numBorn]);
-
-        if (empty($data['numBorn']) || empty($data['volume']) || empty($data['landMark']) || empty($data['collectDay']) || empty($data['coordinates']) || empty($data['damage']) || empty($data['isFull']) || empty($data['isEnable']) || empty($data['nameCity']) || empty($data['countryCode'])) {
-            return new JsonResponse('Missing parameter - please try again');
-        }
-
-        $dump = $this->glassDumpRepository->findOneBy(['number_borne' => $numBorn]);
+        $dump = $this->glassDumpRepository->findBy(['coordonate' => "POINT($coordonate)"]);
 
         if (empty($dump)) {
             $this->glassDumpRepository->saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $nameCity, $countryCode);
@@ -139,7 +138,8 @@ class GlassDumpController
                     'damage' => $dump->getDammage(),
                     'isFull' => $dump->getIsFull(),
                     'isEnable' => $dump->getIsEnable(),
-                    'idCity' => $dump->getId(),
+                    'city_name' => $dump->getCityName(),
+                    'country_code' => $dump->getCountryCode(),
                     'createdAt' => $dump->getCreatedAt(),
                     'updatedAt' => $dump->getUpdatedAt(),
                 ];
@@ -235,9 +235,10 @@ class GlassDumpController
     {
         $parsed_json = json_decode($request->getContent(), true);
         $info = $parsed_json{"features"};
-        $this->glassDumpRepository->savedumpfile($info);
+        $dumps = $this->glassDumpRepository->savedumpfile($info);
 
-        $reponse = new JsonResponse(['status' => 'GlassDump all add or or updated'], Response::HTTP_CREATED);
+
+        $reponse = new JsonResponse(['status' => $dumps], Response::HTTP_CREATED);
         $reponse->headers->set('Access-Control-Allow-Origin', '*');
         return $reponse;
     }

@@ -51,6 +51,7 @@ class GlassDumpRepository extends ServiceEntityRepository
     public function savedumpfile($info)
     {
         $compteur = 0;
+        $alreadyExist = 0;
         $erreur = array(
             "numBorn" => 0,
             "landMark" => 0,
@@ -61,49 +62,57 @@ class GlassDumpRepository extends ServiceEntityRepository
 
         foreach ($info as $glassdump) {
 
-            $newBen = new GlassDump();
-
-            if (!empty($glassdump{'properties'}{'id'}) && is_string($glassdump{'properties'}{'id'})) {
-                $numBorn = ($glassdump{'properties'}{'id'});
-            } else {
-                $erreur["numBorn"]++;
-            }
-            if (!empty($glassdump{'properties'}{'adresse'}) && is_string($glassdump{'properties'}{'adresse'})) {
-                $landMark = $glassdump{'properties'}{'adresse'};
-            } else {
-                $erreur["landMark"]++;
-            }
             if (!empty($glassdump{'geometry'}{'coordinates'}[0]) and !empty($glassdump{'geometry'}{'coordinates'}[1])) {
                 $coordonate = $glassdump{'geometry'}{'coordinates'}[0] . ' ' . $glassdump{'geometry'}{'coordinates'}[1];
             } else {
                 $erreur["coordonate"]++;
             }
-            if (!empty($glassdump{'properties'}{'commune'}) && is_string($glassdump{'properties'}{'commune'})) {
-                $nameCity = ucfirst(strtolower($glassdump{'properties'}{'commune'}));
-            } else {
-                $erreur["nameCity"]++;
-            }
-            if (!empty($glassdump{'properties'}{'code_com'}) && is_numeric($glassdump{'properties'}{'code_com'})) {
-                $countryCode = $glassdump{'properties'}{'code_com'};
-            } else {
-                $erreur["countryCode"]++;
-            }
-            $compteur++;
+            $dump = $this->findOneBy(['coordonate' => "POINT($coordonate)"]);
 
-            $newBen->setNumberBorne($numBorn);
-            $newBen->setVolume(Null);
-            $newBen->setLandmark($landMark);
-            $newBen->setCollectDay(Null);
-            $newBen->setCoordonate('POINT(' . $coordonate . ')');
-            $newBen->setDammage(FALSE);
-            $newBen->setIsFull(FALSE);
-            $newBen->setIsEnable(TRUE);
-            $newBen->setCityName($nameCity);
-            $newBen->setCountryCode($countryCode);
+            if (empty($dump)) {
 
-            $this->manager->persist($newBen);
+                $newBen = new GlassDump();
+
+                if (!empty($glassdump{'properties'}{'id'}) && is_string($glassdump{'properties'}{'id'})) {
+                    $numBorn = ($glassdump{'properties'}{'id'});
+                } else {
+                    $erreur["numBorn"]++;
+                }
+                if (!empty($glassdump{'properties'}{'adresse'}) && is_string($glassdump{'properties'}{'adresse'})) {
+                    $landMark = $glassdump{'properties'}{'adresse'};
+                } else {
+                    $erreur["landMark"]++;
+                }
+                if (!empty($glassdump{'properties'}{'commune'}) && is_string($glassdump{'properties'}{'commune'})) {
+                    $nameCity = ucfirst(strtolower($glassdump{'properties'}{'commune'}));
+                } else {
+                    $erreur["nameCity"]++;
+                }
+                if (!empty($glassdump{'properties'}{'code_com'}) && is_numeric($glassdump{'properties'}{'code_com'})) {
+                    $countryCode = $glassdump{'properties'}{'code_com'};
+                } else {
+                    $erreur["countryCode"]++;
+                }
+                $compteur++;
+
+                $newBen->setNumberBorne($numBorn);
+                $newBen->setVolume(Null);
+                $newBen->setLandmark($landMark);
+                $newBen->setCollectDay(Null);
+                $newBen->setCoordonate('POINT(' . $coordonate . ')');
+                $newBen->setDammage(FALSE);
+                $newBen->setIsFull(FALSE);
+                $newBen->setIsEnable(TRUE);
+                $newBen->setCityName($nameCity);
+                $newBen->setCountryCode($countryCode);
+
+                $this->manager->persist($newBen);
+            } else {
+                $alreadyExist++;
+            }
         }
         $this->manager->flush();
+        return "All glassdump add | $alreadyExist already exist";
         /*$allglassdump['debug']['total'] = count($info);
         $allglassdump['debug']['valide'] = $compteur;
         $allglassdump['debug']['erreur_majeure'] = count($info) - $compteur;
@@ -143,12 +152,12 @@ class GlassDumpRepository extends ServiceEntityRepository
         if (!empty($pts[0]) && is_numeric($pts[0])) {
             $pts1 = $pts[0];
         } else {
-            return "coordonnees invalide (separateur ,)";
+            return "coordonnees invalide (format to 'lat,lon')";
         }
         if (!empty($pts[1]) && is_numeric($pts[1])) {
             $pts2 = $pts[1];
         } else {
-            return "coordonnees invalide (separateur ,)";
+            return "coordonnees invalide (format to 'lat,lon')";
         }
 
         $query = $this->createQueryBuilder('b')
@@ -181,8 +190,7 @@ class GlassDumpRepository extends ServiceEntityRepository
                 ];
             }
             return $data;
-        }
-        else {
+        } else {
             return false;
         }
     }
