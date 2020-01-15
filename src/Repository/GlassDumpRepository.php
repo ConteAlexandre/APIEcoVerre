@@ -135,7 +135,7 @@ class GlassDumpRepository extends ServiceEntityRepository
         empty($data['isFull']) ? true : $dump->setIsFull($data['isFull']);
         empty($data['isEnable']) ? true : $dump->setIsEnable($data['isEnable']);
         empty($data['nameCity']) ? true : $dump->setCityName($data['nameCity']);
-        empty($data['countryCode']) ? true : $dump->setCityName($data['countryCode']);
+        empty($data['countryCode']) ? true : $dump->setCountryCode($data['countryCode']);
         $dump->setUpdatedAt(new \Datetime("now"));
         $this->manager->flush();
     }
