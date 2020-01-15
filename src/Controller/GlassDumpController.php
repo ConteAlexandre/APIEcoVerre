@@ -49,7 +49,9 @@ class GlassDumpController
             throw new NotFoundHttpException('Expecting mandatory parameters!');
         }
         $this->glassDumpRepository->saveDump($numBorn, $volume, $landMark, $collectDay, $coordonate, $nameCity, $countryCode);
-        return new JsonResponse(['status' => 'GlassDump create !'], Response::HTTP_CREATED);
+        $response =new JsonResponse(['status' => 'GlassDump create !'], Response::HTTP_CREATED);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 
     /**
@@ -73,8 +75,9 @@ class GlassDumpController
             'createdAt' => $dump->getCreatedAt(),
             'updatedAt' => $dump->getUpdatedAt(),
         ];
-
-        return new JsonResponse(['GlassDump' => $data], Response::HTTP_OK);
+        $response= new JsonResponse(['GlassDump' => $data], Response::HTTP_OK);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
 
     }
 
@@ -100,7 +103,9 @@ class GlassDumpController
                 'updatedAt' => $dump->getUpdatedAt(),
             ];
         }
-        return new JsonResponse(['GlassDumps ' => $data], Response::HTTP_OK);
+        $response = new JsonResponse(['GlassDumps ' => $data], Response::HTTP_OK);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 
     /**
@@ -114,7 +119,9 @@ class GlassDumpController
         $dump = $this->glassDumpRepository->findOneBy(['id' => $id]);
         $data = json_decode($request->getContent(), true);
         $this->glassDumpRepository->updateDump($dump, $data);
-        return new JsonResponse(['status' => 'GlassDump update !']);
+        $response= new JsonResponse(['status' => 'GlassDump update !']);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 
     /**
@@ -124,7 +131,9 @@ class GlassDumpController
     {
         $dump = $this->glassDumpRepository->findOneBy(['id' => $id]);
         $this->glassDumpRepository->deleteDump($dump);
-        return new JsonResponse(['status' => 'GlassDump deleted']);
+        $response= new JsonResponse(['status' => 'GlassDump deleted']);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 
     /**
@@ -138,7 +147,9 @@ class GlassDumpController
         $info = $parsed_json{"features"};
         $this->glassDumpRepository->savedumpfile($info);
 
-        return new JsonResponse(['status' => 'GlassDump all add or or updated'], Response::HTTP_CREATED);
+        $response= new JsonResponse(['status' => 'GlassDump all add or or updated'], Response::HTTP_CREATED);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 
     /**
@@ -148,10 +159,14 @@ class GlassDumpController
     {
         $dumps = $this->glassDumpRepository->nextTo($gps);
         if ($dumps === false) {
-            return new JsonResponse(['erreur' => "Pas de résultat ou coordonnées non valides"], Response::HTTP_OK);
+            $response= new JsonResponse(['erreur' => "Pas de résultat ou coordonnées non valides"], Response::HTTP_OK);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            return $response;
         }
         else {
-            return new JsonResponse(['GlassDump' => $dumps], Response::HTTP_OK);
+            $response= new JsonResponse(['GlassDump' => $dumps], Response::HTTP_OK);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            return $response;
         }
     }
 }
