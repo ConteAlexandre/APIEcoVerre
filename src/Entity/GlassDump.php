@@ -75,10 +75,14 @@ class GlassDump
     private $id_bin;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="string", length=100)
      */
-    private $city_uuid;
+    private $cityName;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $countryCode;
 
     public function __construct()
     {
@@ -92,12 +96,12 @@ class GlassDump
         return $this->id;
     }
 
-    public function getNumberBorne(): ?int
+    public function getNumberBorne(): ?string
     {
         return $this->number_borne;
     }
 
-    public function setNumberBorne(?int $number_borne): self
+    public function setNumberBorne(?string $number_borne): self
     {
         $this->number_borne = $number_borne;
 
@@ -142,7 +146,10 @@ class GlassDump
 
     public function getCoordonate()
     {
-        return $this->coordonate;
+        $coorSRID = $this->coordonate;
+        $coord = substr($coorSRID, 16, -1); // remove SRID
+        $gps = str_replace(' ', ', ',$coord); //replace space with coma
+        return $gps;
     }
 
     public function setCoordonate($coordonate): self
@@ -212,15 +219,29 @@ class GlassDump
         return $this;
     }
 
-    public function getCityUuid(): ?City
+
+    public function getCityName(): ?string
     {
-        return $this->city_uuid;
+        return $this->cityName;
     }
 
-    public function setCityUuid(?City $city_uuid): self
+    public function setCityName(string $cityName): self
     {
-        $this->city_uuid = $city_uuid;
+        $this->cityName = $cityName;
 
         return $this;
     }
+
+    public function getCountryCode(): ?string
+    {
+        return $this->countryCode;
+    }
+
+    public function setCountryCode(string $countryCode): self
+    {
+        $this->countryCode = $countryCode;
+
+        return $this;
+    }
+
 }
