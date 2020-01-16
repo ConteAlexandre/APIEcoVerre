@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Historic;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Historic|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +15,45 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class HistoricRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
+    public function __construct(ManagerRegistry $registry , EntityManagerInterface $manager)
     {
         parent::__construct($registry, Historic::class);
+        $this->manager = $manager;
+    }
+
+    public function saveHistoric($usersId, $glassDumpId, $isFUll, $isDamage, $isCheck)
+    {
+        $newHist = new Historic();
+
+        empty($usersId) ? true : $newHist->setUserId($usersId);
+        empty($glassDumpId) ? true : $newHist->setGlassdumpId($glassDumpId);
+        empty($isFUll) ? true : $newHist->setIsFull($isFUll);
+        empty($isDamage) ? true : $newHist->setIsDamage($isDamage);
+        empty($isCheck) ? true : $newHist->setIsCheck($isCheck);
+
+        $this->manager->persist($newHist);
+        $this->manager->flush();
+    }
+
+    public function updateHist(Historic $historic , $data)
+    {
+        empty($data['userId']) ? true : $historic->setUserId($data['userId']);
+        empty($data['glassDumpId']) ? true : $historic->setGlassdumpId($data['glassDumpId']);
+        empty($data['isFull']) ? true : $historic->setIsFull($data['isFull']);
+        empty($data['isDamage']) ? true : $historic->setIsDamage($data['isDamage']);
+        empty($data['isCheck']) ? true : $historic->setIsCheck($data['isCheck']);
+        $historic->setUpdatedAt(new \DateTime("now"));
+        $this->manager->flush();
+    }
+
+    public function deleteHist(Historic $historic)
+    {
+        $this->manager->remove($historic);
+        $this->manager->flush();
     }
 
     // /**

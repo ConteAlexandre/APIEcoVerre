@@ -93,10 +93,10 @@ class GlassDumpController
             $reponse->headers->set('Access-Control-Allow-Origin', '*');
             return $reponse;
         } else {
-            $reponse= new JsonResponse(['erreur' => "Not valid Id"], Response::HTTP_OK);
-            $reponse->headers->set('Access-Control-Allow-Origin', '*');
-            return $reponse;
-        }
+        $reponse= new JsonResponse(['erreur' => "Not valid Id"], Response::HTTP_OK);
+        $reponse->headers->set('Access-Control-Allow-Origin', '*');
+        return $reponse;
+    }
     }
 
     /**
