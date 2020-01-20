@@ -31,7 +31,19 @@ class GlassDumpController
      * @OA\Post(
      *     path="/glassdump/create",
      *     tags={"GlassDump"},
-     *
+     *     @OA\Response(
+     *          response="200",
+     *          description="Add the new glassdump",
+     *          @OA\JsonContent(type="array",  @OA\Items(ref="#/components/schemas/GlassDumpSingle"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     )
      * )
      *
      * @Route("/create", name="add_glassDump", methods={"POST"})
