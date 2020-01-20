@@ -1,7 +1,5 @@
 doctrine:
     dbal:
-        driver: 'pdo_pgsql'
-        charset: utf8
         types:
             uuid:  Ramsey\Uuid\Doctrine\UuidType
             geography:

@@ -1,0 +1,584 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API TUTO",
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://api.tuto.fr/v1",
+            "description": "mon api"
+        }
+    ],
+    "paths": {
+        "/glassdump/create": {
+            "post": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::addGlassDump",
+                "responses": {
+                    "200": {
+                        "description": "Add the new glassdump",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                }
+            }
+        },
+        "/glassdump/show/{id}": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::getOneDump",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "GlassDump",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/glassdump/list": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::getAllDump",
+                "responses": {
+                    "200": {
+                        "description": "This GlassDump",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpList"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/glassdump/update/{id}": {
+            "put": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::updateDump",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateGlassDump"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update Reussi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/glassdump/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::deleteDump",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Delete Reussi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/glassdump/createFromFile": {
+            "post": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::addGlassDumpFromFile",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateUpdateGlassDump"
+                },
+                "responses": {
+                    "200": {
+                        "description": "File update",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "GlassDump": {
+                "description": "Schema GlassDump Général",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "number_borne": {
+                        "description": "numéro de la borne",
+                        "type": "integer"
+                    },
+                    "volume": {
+                        "description": "Volume de la Benne total",
+                        "type": "integer"
+                    },
+                    "landmark": {
+                        "description": "point de repère",
+                        "type": "string"
+                    },
+                    "collect_day": {
+                        "description": "Jour de collecte",
+                        "type": "string"
+                    },
+                    "coordonate": {
+                        "description": "geography de postgis",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "created_at": {
+                        "description": "date de création",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "date de de modif",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "dammage": {
+                        "description": "Endommagé ou non",
+                        "type": "boolean"
+                    },
+                    "is_full": {
+                        "description": "Pleine ou non",
+                        "type": "boolean"
+                    },
+                    "is_enable": {
+                        "description": "Active ou non",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "GlassDumpList": {
+                "description": "Schema de lit GlassDump",
+                "properties": {
+                    "number_borne": {
+                        "description": "numéro de la borne",
+                        "type": "integer"
+                    },
+                    "coordonate": {
+                        "description": "geography de postgis",
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "created_at": {
+                        "description": "date de création",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "dammage": {
+                        "description": "Endommagé ou non",
+                        "type": "boolean"
+                    },
+                    "is_full": {
+                        "description": "Pleine ou non",
+                        "type": "boolean"
+                    },
+                    "is_enable": {
+                        "description": "Active ou non",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "GlassDumpSingle": {
+                "description": "Only GlassDump",
+                "properties": {
+                    "volume": {
+                        "description": "Volume de la Benne total",
+                        "type": "integer"
+                    },
+                    "landmark": {
+                        "description": "point de repère",
+                        "type": "string"
+                    },
+                    "collect_day": {
+                        "description": "Jour de collecte",
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "description": "date de de modif",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/GlassDumpList"
+                    }
+                ]
+            },
+            "Historic": {
+                "description": "schema Historic Listing",
+                "properties": {
+                    "id": {
+                        "description": "uuid",
+                        "type": "string"
+                    },
+                    "user_glassdump_uuid": {
+                        "description": "id user",
+                        "type": "string"
+                    },
+                    "is_full": {
+                        "description": "if glassdump full",
+                        "type": "boolean"
+                    },
+                    "is_damage": {
+                        "description": "if glassdump is break",
+                        "type": "boolean"
+                    },
+                    "is_created": {
+                        "description": "creation date",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "NotFound": {
+                "description": "La ressource n'existe pas",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Cette ressource n'existe pas"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "NoAuthorized": {
+                "description": "Vous n'avez pas accès à cette page",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Vous n'avez pas l'autorisation"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "id": {
+                "name": "id",
+                "in": "path",
+                "description": "id de la ressource",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "coordonate": {
+                "name": "coordonate",
+                "in": "path",
+                "description": "coordonate of glassdump",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "requestBodies": {
+            "CreateUpdateCity": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "name",
+                                "county_code",
+                                "region"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "county_code": {
+                                    "type": "integer"
+                                },
+                                "region": {
+                                    "type": "string"
+                                },
+                                "mail_city": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "CreateUpdateGlassDump": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "number_one",
+                                "volume",
+                                "landmark",
+                                "collect_day",
+                                "coordonate"
+                            ],
+                            "properties": {
+                                "number_one": {
+                                    "type": "integer"
+                                },
+                                "volume": {
+                                    "type": "integer"
+                                },
+                                "landmark": {
+                                    "type": "string"
+                                },
+                                "collect_day": {
+                                    "type": "string"
+                                },
+                                "coordonate": {
+                                    "description": "geography PostGis",
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "CreateHistoric": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "user_glassdump_uuid",
+                                "is_full",
+                                "is_damage"
+                            ],
+                            "properties": {
+                                "user_glassdump_uuid": {
+                                    "type": "string"
+                                },
+                                "is_full": {
+                                    "type": "boolean"
+                                },
+                                "is_damage": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "Signin": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "username",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "Signup": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "username",
+                                "mail",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "mail": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "ProfileUser": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "username",
+                                "mail",
+                                "password"
+                            ],
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                },
+                                "mail": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "adress": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "type": "apiKey",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
