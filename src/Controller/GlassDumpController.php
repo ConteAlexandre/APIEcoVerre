@@ -28,6 +28,12 @@ class GlassDumpController
     }
 
     /**
+     * @OA\Post(
+     *     path="/glassdump/create",
+     *     tags={"GlassDump"},
+     *
+     * )
+     *
      * @Route("/create", name="add_glassDump", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
