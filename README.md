@@ -22,13 +22,27 @@ with his agreement and after the glass skips in his ray are display on the part 
 
 ## Installation project
 ```
-* git clone git@github.com:ConteAlexandre/APIBenzai.git
-* cd APIBenzai
-* composer install
+- git clone git@github.com:ConteAlexandre/APIBenzai.git
+- cd APIBenzai
+- composer install
 ```
+
+## Installation database
+* Created the file .env at the root project
+* Copy the content of the file .env.example, then replace in DATABASE_URL the username and password
+with your id of postgres
+* Then follow the commands line :
+```
+- php bin/console doctrine:database:create
+- php bin/console make:migration
+- php bin/console doctrine:migration:migrate
+```
+* Now, you have a database operational
+
+## Start API
 After this commands, the project is ready but for start the application, the last command is
 ```
-* php -S localhost:8000 -t public
+- php -S localhost:8000 -t public
 ```
 
 ## Conclusion
