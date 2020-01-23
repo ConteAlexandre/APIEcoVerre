@@ -31,6 +31,7 @@ class GlassDumpController
      * @OA\Post(
      *     path="/glassdump/create",
      *     tags={"GlassDump"},
+     *     security={"bearer"},
      *     @OA\Response(
      *          response="200",
      *          description="Add the new glassdump",
