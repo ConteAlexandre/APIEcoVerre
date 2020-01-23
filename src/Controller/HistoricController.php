@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\HistoricRepository;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +24,30 @@ class HistoricController
     }
 
     /**
+     * @OA\Post(
+     *     path="/historic/create",
+     *     tags={"Historic"},
+     *     security={"bearer"},
+     *     @OA\Response(
+     *          response="200",
+     *          description="add the new historic",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Historic"))
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     )
+     * )
+     *
      * @Route("/create", name="add_historic", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */
-    public function addGlassDump(Request $request)
+    public function addHistoric(Request $request)
     {
         $data = json_decode($request->getContent(), true);
 
@@ -50,6 +70,25 @@ class HistoricController
     }
 
     /**
+     * @OA\Get(
+     *     path="/historic/show/{id}",
+     *     tags={"Historic"},
+     *     security={"bearer"},
+     *     @OA\Parameter(ref="#/components/parameters/id"),
+     *     @OA\Response(
+     *          response="200",
+     *          description="view a historic with id",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Historic"))
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     )
+     * )
      * @Route("/show/{id}", name="get_one_historic", methods={"GET"})
      */
     public function getOneHist($id)
@@ -78,6 +117,24 @@ class HistoricController
     }
 
     /**
+     * @OA\Get(
+     *     path="/historic/list",
+     *     tags={"Historic"},
+     *     security={"bearer"},
+     *     @OA\Response(
+     *          response="200",
+     *          description="view a historic with id",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Historic"))
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     )
+     * )
      * @Route("/list", name="get_all_hist", methods={"GET"})
      */
     public function getAllHist(): JsonResponse
@@ -107,6 +164,26 @@ class HistoricController
     }
 
     /**
+     * @OA\Put(
+     *     path="/historic/update/{id}",
+     *     tags={"Historic"},
+     *     security={"bearer"},
+     *     @OA\Parameter(ref="#/components/parameters/id"),
+     *     @OA\Response(
+     *          response="200",
+     *          description="update historic",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Historic"))
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     )
+     * )
+     *
      * @Route("/update/{id}", name="update_hist", methods={"PUT"})
      * @param $id
      * @param Request $request
@@ -129,6 +206,26 @@ class HistoricController
         }
     }
     /**
+     * @OA\Delete(
+     *     path="/historic/delete/{id}",
+     *     tags={"Historic"},
+     *     security={"bearer"},
+     *     @OA\Parameter(ref="#/components/parameters/id"),
+     *     @OA\Response(
+     *          response="200",
+     *          description="update historic",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Historic"))
+     *     ),
+     *     @OA\Response(
+     *          response="403",
+     *          ref="#/components/responses/NoAuthorized"
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     )
+     * )
+     *
      * @Route("/delete/{id}", name="delete_dump", methods={"DELETE"})
      */
     public function deleteHist($id)

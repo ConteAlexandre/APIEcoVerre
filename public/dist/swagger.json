@@ -37,7 +37,10 @@
                     "403": {
                         "$ref": "#/components/responses/NoAuthorized"
                     }
-                }
+                },
+                "security": [
+                    "bearer"
+                ]
             }
         },
         "/glassdump/show/{id}": {
@@ -199,6 +202,181 @@
                     },
                     "403": {
                         "$ref": "#/components/responses/NoAuthorized"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/historic/create": {
+            "post": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::addHistoric",
+                "responses": {
+                    "200": {
+                        "description": "add the new historic",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/historic/show/{id}": {
+            "get": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::getOneHist",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "view a historic with id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/historic/list": {
+            "get": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::getAllHist",
+                "responses": {
+                    "200": {
+                        "description": "view a historic with id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/historic/update/{id}": {
+            "put": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::updateHist",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update historic",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                },
+                "security": [
+                    "bearer"
+                ]
+            }
+        },
+        "/historic/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Historic"
+                ],
+                "operationId": "App\\Controller\\HistoricController::deleteHist",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "update historic",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Historic"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/NoAuthorized"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
                     }
                 },
                 "security": [
