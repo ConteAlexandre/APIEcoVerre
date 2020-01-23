@@ -37,6 +37,8 @@ with your id of postgres
 - php bin/console make:migration
 - php bin/console doctrine:migration:migrate
 ```
+* Then, go to the database and install the extension [PostGis](https://postgis.net/install/).
+For do it, click right on the extension, create extension and select postgis.
 * Now, you have a database operational
 
 ## Start API
