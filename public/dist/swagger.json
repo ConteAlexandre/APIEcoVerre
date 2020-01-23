@@ -93,6 +93,9 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
                     }
                 }
             }
@@ -207,6 +210,58 @@
                 "security": [
                     "bearer"
                 ]
+            }
+        },
+        "/glassdump/dumpNextTo/{gps}": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::getByGPS",
+                "responses": {
+                    "200": {
+                        "description": "get one glassdump for gps",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
+            }
+        },
+        "/glassdump/dumpIn/{city}": {
+            "get": {
+                "tags": [
+                    "GlassDump"
+                ],
+                "operationId": "App\\Controller\\GlassDumpController::getByCity",
+                "responses": {
+                    "200": {
+                        "description": "glassdump for a city",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GlassDumpSingle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    }
+                }
             }
         },
         "/historic/create": {

@@ -162,6 +162,10 @@ class GlassDumpController
      *          response="200",
      *          description="This GlassDump",
      *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/GlassDumpList"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
      *     )
      * )
      * @Route("/list", name="get_all_dump", methods={"GET"})
@@ -347,6 +351,20 @@ class GlassDumpController
     }
 
     /**
+     * @OA\Get(
+     *     path="/glassdump/dumpNextTo/{gps}",
+     *     tags={"GlassDump"},
+     *     @OA\Response(
+     *          response="200",
+     *          description="get one glassdump for gps",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/GlassDumpSingle"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     )
+     * )
+     *
      * @Route("/dumpNextTo/{gps}", name="get_glassDumps_next", methods={"GET"})
      */
     public function getByGPS($gps)
@@ -365,6 +383,20 @@ class GlassDumpController
     }
 
     /**
+     * @OA\Get(
+     *     path="/glassdump/dumpIn/{city}",
+     *     tags={"GlassDump"},
+     *     @OA\Response(
+     *          response="200",
+     *          description="glassdump for a city",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/GlassDumpSingle"))
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          ref="#/components/responses/NotFound"
+     *     )
+     * )
+     *
      * @Route("/dumpIn/{city}", name="get_glassDumps_city", methods={"GET"})
      */
     public function getByCity($city)
